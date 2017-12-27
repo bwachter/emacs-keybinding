@@ -12,6 +12,10 @@
 	"activeTab"
   ],
 
+  "icons": {
+    "48": "icons/emacs-48.png"
+  },
+
   "background": {
     "scripts": ["background.js"]
   },
