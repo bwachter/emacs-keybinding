@@ -6,6 +6,8 @@ var body_keybindings = {
   "C-b": () => window.scrollBy(-30, 0),
   "C-n": () => window.scrollBy(0, 30),
   "C-p": () => window.scrollBy(0, -30),
+  "n": () => window.scrollBy(0, 30),
+  "p": () => window.scrollBy(0, -30),
 
   // refresh history
   "C-r": () => window.location.reload(),
