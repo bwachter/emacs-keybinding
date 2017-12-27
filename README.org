@@ -1,0 +1,30 @@
+This is a Emacs key binding addon for Firefox 57+
+
+Scroll
+
+| keymap  | description       |
+|---------+-------------------|
+| C-n     | scroll down       |
+| C-p     | scroll up         |
+| C-f     | scroll right      |
+| C-b     | scroll left       |
+
+
+Tab
+
+| keymap  | description       |
+|---------+-------------------|
+| M-f     | next tab          |
+| M-b     | previous tab      |
+| C-x n   | new tab           |
+| C-x C-f | close current tab |
+
+
+Others
+
+| C-g     | focus on window   |
+| C-r     | refresh           |
+| C-F     | history forward   |
+| C-B     | history back      |
+
+These keybindings work in most webpages except pages such as 'about:xxxx'.
