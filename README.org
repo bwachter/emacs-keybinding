@@ -2,12 +2,12 @@ This is a Emacs key binding addon for Firefox 57+
 
 Scroll
 
-| keymap  | description       |
-|---------+-------------------|
-| C-n     | scroll down       |
-| C-p     | scroll up         |
-| C-f     | scroll right      |
-| C-b     | scroll left       |
+| keymap   | description  |
+|----------+--------------|
+| C-n or n | scroll down  |
+| C-p or p | scroll up    |
+| C-f      | scroll right |
+| C-b      | scroll left  |
 
 
 Tab
