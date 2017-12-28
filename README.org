@@ -16,8 +16,8 @@ Tab
 |---------+-------------------------------|
 | M-f     | next tab                      |
 | M-b     | previous tab                  |
-| C-x n   | new tab                       |
-| C-x C-f | close current tab             |
+| C-x C-f | new tab                       |
+| C-x k   | close current tab             |
 | t       | focus on the first input area |
 
 
