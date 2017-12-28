@@ -21,10 +21,11 @@ Tab
 
 
 Others
-
-| C-g     | focus on window   |
-| C-r     | refresh           |
-| C-F     | history forward   |
-| C-B     | history back      |
+| keymap | description     |
+|--------+-----------------|
+| C-g    | focus on window |
+| C-r    | refresh         |
+| C-F    | history forward |
+| C-B    | history back    |
 
 These keybindings work in most webpages except pages such as 'about:xxxx'.

@@ -13,7 +13,8 @@
   ],
 
   "icons": {
-    "48": "icons/emacs-48.png"
+    "48": "icons/emacs-48.png",
+    "96": "icons/emacs-96.png"
   },
 
   "background": {

@@ -1,5 +1,11 @@
 var current_binding;
 
+const focus_window = () => {
+  if (document.activeElement) {
+    document.activeElement.blur();
+  }
+}
+
 var body_keybindings = {
   // scroll
   "C-f": () => window.scrollBy(30, 0),
@@ -15,22 +21,17 @@ var body_keybindings = {
   "C-B": () => window.history.back(),
 
   // tabs
-  "M-f": () => browser.runtime.connect().postMessage({action: "next_tab"}),
-  "M-b": () => browser.runtime.connect().postMessage({action: "previous_tab"}),
+  "M-f": () => browser.runtime.sendMessage({action: "next_tab"}),
+  "M-b": () => browser.runtime.sendMessage({action: "previous_tab"}),
 
   "C-x": {
-    "k": () => browser.runtime.connect().postMessage({action: "close_tab"}),
-    "C-f": () => browser.runtime.connect().postMessage({action: "new_tab"})
+    "k": () => browser.runtime.sendMessage({action: "close_tab"}),
+    "C-f": () => browser.runtime.sendMessage({action: "new_tab"})
   }
 }
 
 var textarea_keybindings = {
-  "C-g": () => {
-    // remove focus from any focused element
-    if (document.activeElement) {
-      document.activeElement.blur();
-    }
-  }
+  "C-g": () => focus_window()
 };
 
 /**
@@ -82,3 +83,13 @@ document.addEventListener("keydown", (e) => {
       break;
   }
 }, true);
+
+browser.runtime.onMessage.addListener((msg) => {
+  console.log(`action: ${msg.action}`);
+  switch(msg.action) {
+    case "focus_window":
+      focus_window();
+      break;
+  }
+  return true;
+});
