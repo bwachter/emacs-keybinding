@@ -6,6 +6,11 @@ const focus_window = () => {
   }
 }
 
+const focus_first_input = () => {
+  for (var i = 0; document.forms[0].elements[i].type == 'hidden'; i++);
+  document.forms[0].elements[i].focus();
+}
+
 var body_keybindings = {
   // scroll
   "C-f": () => window.scrollBy(30, 0),
@@ -23,6 +28,7 @@ var body_keybindings = {
   // tabs
   "M-f": () => browser.runtime.sendMessage({action: "next_tab"}),
   "M-b": () => browser.runtime.sendMessage({action: "previous_tab"}),
+  "t": () => focus_first_input(),
 
   "C-x": {
     "k": () => browser.runtime.sendMessage({action: "close_tab"}),
@@ -73,6 +79,7 @@ document.addEventListener("keydown", (e) => {
     case "function":
       command();
       current_binding = null;   // reset keybinding
+      e.preventDefault();
       break;
     case "object":
       current_binding = command;

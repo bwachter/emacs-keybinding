@@ -12,15 +12,17 @@ Scroll
 
 Tab
 
-| keymap  | description       |
-|---------+-------------------|
-| M-f     | next tab          |
-| M-b     | previous tab      |
-| C-x n   | new tab           |
-| C-x C-f | close current tab |
+| keymap  | description                   |
+|---------+-------------------------------|
+| M-f     | next tab                      |
+| M-b     | previous tab                  |
+| C-x n   | new tab                       |
+| C-x C-f | close current tab             |
+| t       | focus on the first input area |
 
 
 Others
+
 | keymap | description     |
 |--------+-----------------|
 | C-g    | focus on window |
