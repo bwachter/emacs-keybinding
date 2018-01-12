@@ -1,3 +1,5 @@
+It only works on Mac OS.
+
 This is a Emacs key binding addon for Firefox 57+
 
 Scroll
