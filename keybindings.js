@@ -30,6 +30,13 @@ var body_keybindings = {
   "M-b": () => browser.runtime.sendMessage({action: "previous_tab"}),
   "t": () => focus_first_input(),
 
+  // emulate ESC <key> for M-<key>
+  // ideal would be just parsing this map, and auto-generating the ESC mappings
+  "ESC": {
+    "f": () => browser.runtime.sendMessage({action: "next_tab"}),
+    "b": () => browser.runtime.sendMessage({action: "previous_tab"}),
+  },
+
   "C-x": {
     "k": () => browser.runtime.sendMessage({action: "close_tab"}),
     "C-f": () => browser.runtime.sendMessage({action: "new_tab"})
@@ -50,7 +57,10 @@ const get_key = (e) => {
       ctrl = e.ctrlKey ? "C-" : "",
       meta = e.altKey ? "M-" : "";
 
-  return ctrl + meta + key;
+  if (e.key == "Escape")
+    return "ESC";
+  else
+    return ctrl + meta + key;
 }
 
 /**
