@@ -46,11 +46,12 @@ var textarea_keybindings = {
  * @returns {String}
  */
 const get_key = (e) => {
-  var key = String.fromCharCode(e.keyCode),
+  var key = e.key,
       ctrl = e.ctrlKey ? "C-" : "",
       meta = e.altKey ? "M-" : "",
       shift = e.shiftKey ? "S-" : "";
-  return ctrl + meta + (shift ? key : key.toLowerCase());
+
+  return ctrl + meta + key;
 }
 
 /**
