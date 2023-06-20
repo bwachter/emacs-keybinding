@@ -48,8 +48,7 @@ var textarea_keybindings = {
 const get_key = (e) => {
   var key = e.key,
       ctrl = e.ctrlKey ? "C-" : "",
-      meta = e.altKey ? "M-" : "",
-      shift = e.shiftKey ? "S-" : "";
+      meta = e.altKey ? "M-" : "";
 
   return ctrl + meta + key;
 }
@@ -64,6 +63,11 @@ const get_current_bind = (target_type) =>
        ? textarea_keybindings : body_keybindings);
 
 document.addEventListener("keydown", (e) => {
+  if (e.key == "Shift"){
+    console.log(`Ignoring shift`);
+    return;
+  }
+
   var key = get_key(e),
       target_type = e.target.tagName.toLowerCase();
 
