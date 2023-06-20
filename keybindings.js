@@ -19,6 +19,8 @@ var body_keybindings = {
   "C-p": () => window.scrollBy(0, -30),
   "n": () => window.scrollBy(0, 30),
   "p": () => window.scrollBy(0, -30),
+  "M-<": () => window.scroll(0, 0),
+  "M->": () => window.scroll(0, document.body.scrollHeight),
 
   // refresh history
   "C-r": () => window.location.reload(),
@@ -33,6 +35,8 @@ var body_keybindings = {
   // emulate ESC <key> for M-<key>
   // ideal would be just parsing this map, and auto-generating the ESC mappings
   "ESC": {
+    "<": () => window.scroll(0, 0),
+    ">": () => window.scroll(0, document.body.scrollHeight),
     "f": () => browser.runtime.sendMessage({action: "next_tab"}),
     "b": () => browser.runtime.sendMessage({action: "previous_tab"}),
   },
