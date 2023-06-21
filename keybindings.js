@@ -1,5 +1,29 @@
 var current_binding;
 
+// recursively generate ESC <key> compat mappings for M-<key>
+function generate_ESC_bindings(bindings){
+  var new_bindings = {}
+  var esc_bindings = {}
+
+  for (const key in bindings){
+    const value = bindings[key];
+    if (typeof value == "object"){
+      var submap = generate_ESC_bindings(value);
+      new_bindings[key] = submap;
+      continue;
+    }
+    new_bindings[key] = value;
+    if (key.startsWith("M-")){
+      esc_key = key.replace("M-", "");
+      esc_bindings[esc_key] = value;
+    }
+  }
+
+  if (Object.keys(esc_bindings).length > 0)
+    new_bindings['ESC'] = esc_bindings;
+  return new_bindings;
+}
+
 const focus_window = () => {
   if (document.activeElement) {
     document.activeElement.blur();
@@ -32,15 +56,6 @@ var body_keybindings = {
   "M-b": () => chrome.runtime.sendMessage({action: "previous_tab"}),
   "t": () => focus_first_input(),
 
-  // emulate ESC <key> for M-<key>
-  // ideal would be just parsing this map, and auto-generating the ESC mappings
-  "ESC": {
-    "<": () => window.scroll(0, 0),
-    ">": () => window.scroll(0, document.body.scrollHeight),
-    "f": () => chrome.runtime.sendMessage({action: "next_tab"}),
-    "b": () => chrome.runtime.sendMessage({action: "previous_tab"}),
-  },
-
   "C-h": {
     "?": () => chrome.runtime.sendMessage({action: "options_page"}),
   },
@@ -56,8 +71,9 @@ var body_keybindings = {
       "C-f": () => chrome.runtime.sendMessage({action: "new_window"})
     }
   }
-
 }
+
+var generated_keybindings = generate_ESC_bindings(body_keybindings);
 
 var textarea_keybindings = {
   "C-g": () => focus_window()
@@ -86,7 +102,7 @@ const get_key = (e) => {
  */
 const get_current_bind = (target_type) =>
       (target_type == "input" || target_type == "textarea"
-       ? textarea_keybindings : body_keybindings);
+       ? textarea_keybindings : generated_keybindings);
 
 document.addEventListener("keydown", (e) => {
   if (e.key == "Shift" || e.key == "Control" || e.key == "Alt" || e.key == "Meta"){
