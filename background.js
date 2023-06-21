@@ -46,13 +46,20 @@ browser.runtime.onMessage.addListener((msg, sender) => {
         });
       break;
     case "new_tab":
-      browser.tabs.create({active:true})
+      if ('own_tab_page' in options && options['own_tab_page'] == true){
+        browser.tabs.create({active:true,
+                             url: "new-tab.html"})
+      } else
+        browser.tabs.create({active:true})
       break;
     case "close_tab":
       browser.tabs.remove(current_tab.id);
       break;
     case "new_window":
-      browser.windows.create();
+      if ('own_tab_page' in options && options['own_tab_page'] == true){
+        browser.windows.create({url: "new-tab.html"})
+      } else
+        browser.windows.create();
       break;
     case "close_window":
       browser.windows.remove(current_tab.windowId);

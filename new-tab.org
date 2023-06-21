@@ -1,0 +1,8 @@
+#+OPTIONS: html-postamble:nil toc:nil
+#+EXPORT_FILE_NAME: new-tab.html
+
+This simple new tab page is provided by the Emacs keybindings extension to make custom keybindings work here. If you prefer the default tab page press C-h ? to open the extension settings, and uncheck "Use custom 'new tab' page to allow overriding keybindings".
+
+#+BEGIN_EXPORT html
+<script src="keybindings.js"></script>
+#+END_EXPORT
