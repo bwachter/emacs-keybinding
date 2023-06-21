@@ -1,3 +1,10 @@
+function onSuccess(){
+}
+
+function onError(error){
+  console.log(`Error; ${error}`);
+}
+
 browser.runtime.onMessage.addListener((msg, sender) => {
 
   console.log(`action: ${msg.action}`);
@@ -31,5 +38,11 @@ browser.runtime.onMessage.addListener((msg, sender) => {
     case "close_tab":
       browser.tabs.remove(current_tab.id);
       break;
+    case "options_page":
+      var opening = browser.runtime.openOptionsPage();
+      opening.then(onSuccess, onError);
+      break;
+    default:
+      console.log(`Unknown action: ${msg.action}`);
   }
 });

@@ -41,6 +41,10 @@ var body_keybindings = {
     "b": () => browser.runtime.sendMessage({action: "previous_tab"}),
   },
 
+  "C-h": {
+    "?": () => browser.runtime.sendMessage({action: "options_page"}),
+  },
+
   "C-x": {
     "k": () => browser.runtime.sendMessage({action: "close_tab"}),
     "C-f": () => browser.runtime.sendMessage({action: "new_tab"})

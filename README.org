@@ -1,8 +1,12 @@
-It only works on Mac OS.
+#+OPTIONS: html-postamble:nil toc:nil
+#+EXPORT_FILE_NAME: options.html
 
-This is a Emacs key binding addon for Firefox 57+
+This is a Emacs key binding addon for Firefox 57+. These keybindings work in most webpages, but not in internal Firefox pages ('about:xxxx', new tab page).
 
-Scroll
+This extension can't modify keybindings already in use by Firefox. The easiest way to free those keybindings is to change the access key used by Firefox, either by setting [[http://kb.mozillazine.org/Ui.key.chromeAccess][Ui.key.chromeAccesss]] or [[http://kb.mozillazine.org/Ui.key.generalAccessKey][Ui.key.generalAccessKey]].
+
+* Keybindings
+** Scroll
 
 | keymap   | description      |
 |----------+------------------|
@@ -14,7 +18,7 @@ Scroll
 | M->      | scroll to bottom |
 
 
-Tab
+** Tab
 
 | keymap  | description                   |
 |---------+-------------------------------|
@@ -25,13 +29,18 @@ Tab
 | t       | focus on the first input area |
 
 
-Others
+** Others
 
-| keymap | description     |
-|--------+-----------------|
-| C-g    | focus on window |
-| C-r    | refresh         |
-| C-F    | history forward |
-| C-B    | history back    |
+| keymap | description                |
+|--------+----------------------------|
+| C-g    | focus on window            |
+| C-r    | refresh                    |
+| C-F    | history forward            |
+| C-B    | history back               |
+| C-h ?  | display help/settings page |
 
-These keybindings work in most webpages except pages such as 'about:xxxx'.
+* Configuration
+
+#+BEGIN_EXPORT html
+<script src="options.js"></script>
+#+END_EXPORT
