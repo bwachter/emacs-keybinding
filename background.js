@@ -5,13 +5,19 @@ function onError(error){
   console.log(`Error; ${error}`);
 }
 
+function logMsg(msg){
+  console.log(`Emacs-keybinding: ${msg}`);
+}
+
 browser.runtime.onMessage.addListener((msg, sender) => {
 
-  console.log(`action: ${msg.action}`);
-
+  logMsg(`action: ${msg.action}`);
   let current_tab = sender.tab;
 
   switch(msg.action) {
+    case "log":
+      logMsg(msg.msg);
+      break;
     case "next_tab":
       browser.tabs.query({currentWindow: true}).then(
         (tabs) => {
@@ -42,7 +48,6 @@ browser.runtime.onMessage.addListener((msg, sender) => {
       browser.windows.create();
       break;
     case "close_window":
-      console.log(current_tab.windowId);
       browser.windows.remove(current_tab.windowId);
       break;
     case "options_page":
@@ -50,6 +55,6 @@ browser.runtime.onMessage.addListener((msg, sender) => {
       opening.then(onSuccess, onError);
       break;
     default:
-      console.log(`Unknown action: ${msg.action}`);
+      logMsg(`Unknown action: ${msg.action}`);
   }
 });

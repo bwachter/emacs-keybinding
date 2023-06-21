@@ -90,20 +90,20 @@ const get_current_bind = (target_type) =>
 
 document.addEventListener("keydown", (e) => {
   if (e.key == "Shift" || e.key == "Control" || e.key == "Alt" || e.key == "Meta"){
-    console.log(`Ignoring modifier`);
+    browser.runtime.sendMessage({action: "log", msg: "Ignoring modifier"});
     return;
   }
 
   var key = get_key(e),
       target_type = e.target.tagName.toLowerCase();
 
-  console.log(`user press key is ${key}, target type is ${target_type}`);
+  browser.runtime.sendMessage({action: "log", msg: `user press key is ${key}, target type is ${target_type}`});
 
   if (!current_binding) {
     current_binding = get_current_bind(target_type);
   }
 
-  console.log(`current binding is ${Object.keys(current_binding)}`);
+  browser.runtime.sendMessage({action: "log", msg: `current binding is ${Object.keys(current_binding)}`});
 
   var command = current_binding[key];
   switch (typeof command) {
@@ -123,7 +123,7 @@ document.addEventListener("keydown", (e) => {
 }, true);
 
 browser.runtime.onMessage.addListener((msg) => {
-  console.log(`action: ${msg.action}`);
+  browser.runtime.sendMessage({action: "log", msg: `action: ${msg.action}`});
   switch(msg.action) {
     case "focus_window":
       focus_window();
