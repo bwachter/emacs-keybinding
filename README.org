@@ -28,6 +28,12 @@ This extension can't modify keybindings already in use by Firefox. The easiest w
 | C-x k   | close current tab             |
 | t       | focus on the first input area |
 
+** Window
+
+| keymap      | description          |
+|-------------+----------------------|
+| C-u C-x C-f | new window           |
+| C-u C-x k   | close current window |
 
 ** Others
 

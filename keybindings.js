@@ -48,7 +48,15 @@ var body_keybindings = {
   "C-x": {
     "k": () => browser.runtime.sendMessage({action: "close_tab"}),
     "C-f": () => browser.runtime.sendMessage({action: "new_tab"})
+  },
+
+  "C-u": {
+    "C-x": {
+      "k": () => browser.runtime.sendMessage({action: "close_window"}),
+      "C-f": () => browser.runtime.sendMessage({action: "new_window"})
+    }
   }
+
 }
 
 var textarea_keybindings = {

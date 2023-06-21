@@ -38,6 +38,13 @@ browser.runtime.onMessage.addListener((msg, sender) => {
     case "close_tab":
       browser.tabs.remove(current_tab.id);
       break;
+    case "new_window":
+      browser.windows.create();
+      break;
+    case "close_window":
+      console.log(current_tab.windowId);
+      browser.windows.remove(current_tab.windowId);
+      break;
     case "options_page":
       var opening = browser.runtime.openOptionsPage();
       opening.then(onSuccess, onError);
