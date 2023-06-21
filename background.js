@@ -12,7 +12,7 @@ function logMsg(msg){
     console.log(`Emacs-keybinding: ${msg}`);
 }
 
-browser.runtime.onMessage.addListener((msg, sender) => {
+chrome.runtime.onMessage.addListener((msg, sender) => {
 
   logMsg(`action: ${msg.action}`);
   let current_tab = sender.tab;
@@ -26,46 +26,46 @@ browser.runtime.onMessage.addListener((msg, sender) => {
       options[msg.key] = msg.value;
       break;
     case "next_tab":
-      browser.tabs.query({currentWindow: true}).then(
+      chrome.tabs.query({currentWindow: true}).then(
         (tabs) => {
           let next_tab = tabs[current_tab.index+1] || tabs[0];
           if (next_tab) {
-            browser.tabs.update(next_tab.id, {active:true})
-              .then(() => browser.tabs.sendMessage(next_tab.id, {action: "focus_window"}))
+            chrome.tabs.update(next_tab.id, {active:true})
+              .then(() => chrome.tabs.sendMessage(next_tab.id, {action: "focus_window"}))
           }
         });
       break;
     case "previous_tab":
-      browser.tabs.query({currentWindow: true}).then(
+      chrome.tabs.query({currentWindow: true}).then(
         (tabs) => {
           let previous_tab = tabs[current_tab.index-1] || tabs[tabs.length-1];
           if (previous_tab){
-            browser.tabs.update(previous_tab.id, {active:true})
-              .then(() => browser.tabs.sendMessage(previous_tab.id, {action: "focus_window"}))
+            chrome.tabs.update(previous_tab.id, {active:true})
+              .then(() => chrome.tabs.sendMessage(previous_tab.id, {action: "focus_window"}))
           }
         });
       break;
     case "new_tab":
       if ('own_tab_page' in options && options['own_tab_page'] == true){
-        browser.tabs.create({active:true,
+        chrome.tabs.create({active:true,
                              url: "new-tab.html"})
       } else
-        browser.tabs.create({active:true})
+        chrome.tabs.create({active:true})
       break;
     case "close_tab":
-      browser.tabs.remove(current_tab.id);
+      chrome.tabs.remove(current_tab.id);
       break;
     case "new_window":
       if ('own_tab_page' in options && options['own_tab_page'] == true){
-        browser.windows.create({url: "new-tab.html"})
+        chrome.windows.create({url: "new-tab.html"})
       } else
-        browser.windows.create();
+        chrome.windows.create();
       break;
     case "close_window":
-      browser.windows.remove(current_tab.windowId);
+      chrome.windows.remove(current_tab.windowId);
       break;
     case "options_page":
-      var opening = browser.runtime.openOptionsPage();
+      var opening = chrome.runtime.openOptionsPage();
       opening.then(onSuccess, onError);
       break;
     default:

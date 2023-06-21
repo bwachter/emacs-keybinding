@@ -28,8 +28,8 @@ var body_keybindings = {
   "C-B": () => window.history.back(),
 
   // tabs
-  "M-f": () => browser.runtime.sendMessage({action: "next_tab"}),
-  "M-b": () => browser.runtime.sendMessage({action: "previous_tab"}),
+  "M-f": () => chrome.runtime.sendMessage({action: "next_tab"}),
+  "M-b": () => chrome.runtime.sendMessage({action: "previous_tab"}),
   "t": () => focus_first_input(),
 
   // emulate ESC <key> for M-<key>
@@ -37,23 +37,23 @@ var body_keybindings = {
   "ESC": {
     "<": () => window.scroll(0, 0),
     ">": () => window.scroll(0, document.body.scrollHeight),
-    "f": () => browser.runtime.sendMessage({action: "next_tab"}),
-    "b": () => browser.runtime.sendMessage({action: "previous_tab"}),
+    "f": () => chrome.runtime.sendMessage({action: "next_tab"}),
+    "b": () => chrome.runtime.sendMessage({action: "previous_tab"}),
   },
 
   "C-h": {
-    "?": () => browser.runtime.sendMessage({action: "options_page"}),
+    "?": () => chrome.runtime.sendMessage({action: "options_page"}),
   },
 
   "C-x": {
-    "k": () => browser.runtime.sendMessage({action: "close_tab"}),
-    "C-f": () => browser.runtime.sendMessage({action: "new_tab"})
+    "k": () => chrome.runtime.sendMessage({action: "close_tab"}),
+    "C-f": () => chrome.runtime.sendMessage({action: "new_tab"})
   },
 
   "C-u": {
     "C-x": {
-      "k": () => browser.runtime.sendMessage({action: "close_window"}),
-      "C-f": () => browser.runtime.sendMessage({action: "new_window"})
+      "k": () => chrome.runtime.sendMessage({action: "close_window"}),
+      "C-f": () => chrome.runtime.sendMessage({action: "new_window"})
     }
   }
 
@@ -90,20 +90,20 @@ const get_current_bind = (target_type) =>
 
 document.addEventListener("keydown", (e) => {
   if (e.key == "Shift" || e.key == "Control" || e.key == "Alt" || e.key == "Meta"){
-    browser.runtime.sendMessage({action: "log", msg: "Ignoring modifier"});
+    chrome.runtime.sendMessage({action: "log", msg: "Ignoring modifier"});
     return;
   }
 
   var key = get_key(e),
       target_type = e.target.tagName.toLowerCase();
 
-  browser.runtime.sendMessage({action: "log", msg: `user press key is ${key}, target type is ${target_type}`});
+  chrome.runtime.sendMessage({action: "log", msg: `user press key is ${key}, target type is ${target_type}`});
 
   if (!current_binding) {
     current_binding = get_current_bind(target_type);
   }
 
-  browser.runtime.sendMessage({action: "log", msg: `current binding is ${Object.keys(current_binding)}`});
+  chrome.runtime.sendMessage({action: "log", msg: `current binding is ${Object.keys(current_binding)}`});
 
   var command = current_binding[key];
   switch (typeof command) {
@@ -122,8 +122,8 @@ document.addEventListener("keydown", (e) => {
   }
 }, true);
 
-browser.runtime.onMessage.addListener((msg) => {
-  browser.runtime.sendMessage({action: "log", msg: `action: ${msg.action}`});
+chrome.runtime.onMessage.addListener((msg) => {
+  chrome.runtime.sendMessage({action: "log", msg: `action: ${msg.action}`});
   switch(msg.action) {
     case "focus_window":
       focus_window();
