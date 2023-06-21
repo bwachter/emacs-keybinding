@@ -7,6 +7,12 @@
   "homepage_url": "https://github.com/kaiwk/emacs-keybinding",
   "author": "Wang Kai",
 
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{92800b1f-88a5-490c-8903-e230447fcb5d}"
+    }
+  },
+
   "permissions": [
       "tabs",
       "activeTab",

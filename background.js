@@ -1,3 +1,5 @@
+var options = {}
+
 function onSuccess(){
 }
 
@@ -6,7 +8,8 @@ function onError(error){
 }
 
 function logMsg(msg){
-  console.log(`Emacs-keybinding: ${msg}`);
+  if ('debug_log' in options && options['debug_log'] == true)
+    console.log(`Emacs-keybinding: ${msg}`);
 }
 
 browser.runtime.onMessage.addListener((msg, sender) => {
@@ -17,6 +20,10 @@ browser.runtime.onMessage.addListener((msg, sender) => {
   switch(msg.action) {
     case "log":
       logMsg(msg.msg);
+      break;
+    case "option":
+      logMsg(`setting ${msg.key} to ${msg.value}`);
+      options[msg.key] = msg.value;
       break;
     case "next_tab":
       browser.tabs.query({currentWindow: true}).then(
