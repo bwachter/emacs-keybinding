@@ -77,8 +77,8 @@ const get_current_bind = (target_type) =>
        ? textarea_keybindings : body_keybindings);
 
 document.addEventListener("keydown", (e) => {
-  if (e.key == "Shift"){
-    console.log(`Ignoring shift`);
+  if (e.key == "Shift" || e.key == "Control" || e.key == "Alt" || e.key == "Meta"){
+    console.log(`Ignoring modifier`);
     return;
   }
 
