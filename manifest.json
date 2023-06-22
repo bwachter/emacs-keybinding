@@ -14,6 +14,7 @@
   },
 
   "permissions": [
+      "find",
       "tabs",
       "activeTab",
       "storage"

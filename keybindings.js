@@ -1,4 +1,5 @@
 var current_binding;
+var search_input_id = "emacsBindingsSearchInput";
 
 // recursively generate ESC <key> compat mappings for M-<key>
 function generate_ESC_bindings(bindings){
@@ -22,6 +23,29 @@ function generate_ESC_bindings(bindings){
   if (Object.keys(esc_bindings).length > 0)
     new_bindings['ESC'] = esc_bindings;
   return new_bindings;
+}
+
+function create_search_dialog(){
+  var idString = "emacsBindingsSearchDialog";
+
+  let node = document.getElementById(idString);
+  if (node){
+    chrome.runtime.sendMessage({action: "log", msg: "Search box seems to exist already"});
+    node.showModal();
+  } else {
+    chrome.runtime.sendMessage({action: "log", msg: "Trying to create search box"});
+    var dialog = document.createElement("dialog");
+    dialog.id = idString;
+    dialog.role = 'dialog';
+    dialog.innerHTML = `
+Forward search:
+<form>
+<label><input type="search" name="${search_input_id}" id="${search_input_id}" autofocus/><br/>
+</form
+`
+    document.body.appendChild(dialog);
+    dialog.showModal();
+  }
 }
 
 const focus_window = () => {
@@ -50,6 +74,9 @@ var body_keybindings = {
   "C-r": () => window.location.reload(),
   "C-F": () => window.history.forward(),
   "C-B": () => window.history.back(),
+
+  //"C-s": () => chrome.runtime.sendMessage({action: "search"}),
+  "C-s": () => create_search_dialog(),
 
   // tabs
   "M-f": () => chrome.runtime.sendMessage({action: "next_tab"}),
@@ -103,6 +130,21 @@ const get_key = (e) => {
 const get_current_bind = (target_type) =>
       (target_type == "input" || target_type == "textarea"
        ? textarea_keybindings : generated_keybindings);
+
+document.addEventListener("keyup", (e) => {
+  var target_type = e.target.tagName.toLowerCase();
+  var target_id = e.target.id;
+
+  if (target_type == "input" && target_id == search_input_id){
+    var target_value = e.target.value;
+
+    if (target_value.length > 0){
+      chrome.runtime.sendMessage({action: "find", search: target_value});
+    } else {
+      chrome.runtime.sendMessage({action: "log", msg: "Search string too short"});
+    }
+  }
+}, true);
 
 document.addEventListener("keydown", (e) => {
   if (e.key == "Shift" || e.key == "Control" || e.key == "Alt" || e.key == "Meta"){

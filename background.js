@@ -12,6 +12,18 @@ function logMsg(msg){
     console.log(`Emacs-keybinding: ${msg}`);
 }
 
+/* Eventually this should
+ * - highlight matches as typed
+ * - jump to the first match as it is developing
+ * - jump to the second match when C-s is pressed again
+ */
+function handle_find(results){
+  logMsg("Handling find, results: " + results.count);
+  if (results.count > 0) {
+    browser.find.highlightResults();
+  }
+}
+
 chrome.runtime.onMessage.addListener((msg, sender) => {
 
   logMsg(`action: ${msg.action}`);
@@ -67,6 +79,12 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
     case "options_page":
       var opening = chrome.runtime.openOptionsPage();
       opening.then(onSuccess, onError);
+      break;
+    case "find":
+      if (msg.search.length > 0){
+        logMsg(`Searching for: ${msg.search}`);
+        browser.find.find(msg.search).then(handle_find);
+      }
       break;
     default:
       logMsg(`Unknown action: ${msg.action}`);
