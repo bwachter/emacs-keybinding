@@ -1,5 +1,26 @@
 var options = {}
 
+var default_options = {
+  own_tab_page: false,
+  debug_log: false
+}
+
+// this makes sure options are set without loading the options page
+// additionally this should avoid problems with the background service
+// restarting for manifest 3 in the future
+for (const key in default_options){
+  chrome.storage.sync.get(key, function (setting) {
+    if (Object.keys(setting).length == 0){
+      var value = default_options[key];
+      chrome.storage.sync.set({[key]: value});
+      options[key] = value;
+    } else
+      options[key] = setting[key];
+  });
+}
+
+console.log(options);
+
 function onSuccess(){
 }
 
@@ -34,8 +55,10 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
       logMsg(msg.msg);
       break;
     case "option":
-      logMsg(`setting ${msg.key} to ${msg.value}`);
-      options[msg.key] = msg.value;
+      if (msg.key in options && options[msg.key] != msg.value){
+        logMsg(`setting ${msg.key} to ${msg.value}`);
+        options[msg.key] = msg.value;
+      }
       break;
     case "next_tab":
       chrome.tabs.query({currentWindow: true}).then(
