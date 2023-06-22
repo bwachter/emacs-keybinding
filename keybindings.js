@@ -1,6 +1,8 @@
 var current_binding;
 var search_input_id = "emacsBindingsSearchInput";
 
+chrome.runtime.sendMessage({action: "log", msg: `Loading content script in ${document.title}`});
+
 // recursively generate ESC <key> compat mappings for M-<key>
 function generate_ESC_bindings(bindings){
   var new_bindings = {}
@@ -22,6 +24,14 @@ function generate_ESC_bindings(bindings){
 
   if (Object.keys(esc_bindings).length > 0)
     new_bindings['ESC'] = esc_bindings;
+
+  // add in top level bindings without modifier, if needed
+  chrome.storage.sync.get("bindings_without_modifier", function (setting) {
+    if (setting["bindings_without_modifier"] == true){
+      Object.assign(new_bindings, nomod_keybindings);
+    }
+  });
+
   return new_bindings;
 }
 
@@ -59,14 +69,19 @@ const focus_first_input = () => {
   document.forms[0].elements[i].focus();
 }
 
+// toplevel keybindings without modifier can break some sites -> make it optional
+var nomod_keybindings = {
+  "n": () => window.scrollBy(0, 30),
+  "p": () => window.scrollBy(0, -30),
+  "t": () => focus_first_input(),
+}
+
 var body_keybindings = {
   // scroll
   "C-f": () => window.scrollBy(30, 0),
   "C-b": () => window.scrollBy(-30, 0),
   "C-n": () => window.scrollBy(0, 30),
   "C-p": () => window.scrollBy(0, -30),
-  "n": () => window.scrollBy(0, 30),
-  "p": () => window.scrollBy(0, -30),
   "M-<": () => window.scroll(0, 0),
   "M->": () => window.scroll(0, document.body.scrollHeight),
 
@@ -81,7 +96,6 @@ var body_keybindings = {
   // tabs
   "M-f": () => chrome.runtime.sendMessage({action: "next_tab"}),
   "M-b": () => chrome.runtime.sendMessage({action: "previous_tab"}),
-  "t": () => focus_first_input(),
 
   "C-h": {
     "?": () => chrome.runtime.sendMessage({action: "options_page"}),

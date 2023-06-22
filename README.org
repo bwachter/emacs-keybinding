@@ -51,6 +51,7 @@ This extension can't modify keybindings already in use by Firefox. The easiest w
 <form>
 <label><input type="checkbox" name="own_tab_page" id="own_tab_page"/> Use custom 'new tab' page to allow overriding keybindings</label><br/>
 <label><input type="checkbox" name="debug_log" id="debug_log"/> Log debug messages to console</label><br/>
+<label><input type="checkbox" name="bindings_without_modifier" id="bindings_without_modifier"/> Allow top level keybindings without modifier</label><br/>
 </form>
 
 <script src="jquery-3.7.0.min.js"></script>

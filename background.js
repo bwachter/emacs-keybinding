@@ -2,7 +2,8 @@ var options = {}
 
 var default_options = {
   own_tab_page: false,
-  debug_log: false
+  debug_log: false,
+  bindings_without_modifier: false
 }
 
 // this makes sure options are set without loading the options page
