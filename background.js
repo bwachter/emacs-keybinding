@@ -48,7 +48,9 @@ function handle_find(results){
 
 chrome.runtime.onMessage.addListener((msg, sender) => {
 
-  logMsg(`action: ${msg.action}`);
+  if (msg.action != "log")
+    logMsg(`action: ${msg.action}`);
+
   let current_tab = sender.tab;
 
   switch(msg.action) {
