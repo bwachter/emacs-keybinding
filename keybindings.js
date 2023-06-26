@@ -25,13 +25,6 @@ function generate_ESC_bindings(bindings){
   if (Object.keys(esc_bindings).length > 0)
     new_bindings['ESC'] = esc_bindings;
 
-  // add in top level bindings without modifier, if needed
-  chrome.storage.sync.get("bindings_without_modifier", function (setting) {
-    if (setting["bindings_without_modifier"] == true){
-      Object.assign(new_bindings, nomod_keybindings);
-    }
-  });
-
   return new_bindings;
 }
 
@@ -51,7 +44,7 @@ function create_search_dialog(){
 Forward search:
 <form>
 <label><input type="search" name="${search_input_id}" id="${search_input_id}" autofocus/><br/>
-</form
+</form>
 `
     document.body.appendChild(dialog);
     dialog.showModal();
@@ -114,11 +107,26 @@ var body_keybindings = {
   }
 }
 
-var generated_keybindings = generate_ESC_bindings(body_keybindings);
-
 var textarea_keybindings = {
   "C-g": () => focus_window()
 };
+
+// initialise keybindings based on above tables + settings; this should
+// be redone in a way allowing re-init on changed settings. As the bindings
+// are per tab, and get updated on reload not high priority, though.
+var generated_keybindings = generate_ESC_bindings(body_keybindings);
+var generated_textarea_keybindings = {};
+
+// this needs to happen before potentially adding nomod keybindings - having
+// those on text fields would break stuff
+Object.assign(generated_textarea_keybindings, generated_keybindings);
+
+// add in top level bindings without modifier, if needed
+chrome.storage.sync.get("bindings_without_modifier", function (setting) {
+  if (setting["bindings_without_modifier"] == true){
+    Object.assign(generated_keybindings, nomod_keybindings);
+  }
+});
 
 /**
  * Turn KeyboardEvent to string.
@@ -143,7 +151,7 @@ const get_key = (e) => {
  */
 const get_current_bind = (target_type) =>
       (target_type == "input" || target_type == "textarea"
-       ? textarea_keybindings : generated_keybindings);
+       ? generated_textarea_keybindings : generated_keybindings);
 
 document.addEventListener("keyup", (e) => {
   var target_type = e.target.tagName.toLowerCase();
