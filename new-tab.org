@@ -15,8 +15,15 @@ Enter URL or search term:
 <script src="new-tab.js"></script>
 #+END_EXPORT
 
-Lookup rules:
+Entered values will be processed as follows:
 
 1. if the entered string is a valid URL (including protocol specifier), open it.
 2. try if the entered string will become a valid URL for a HTTP GET request by prepending https:// and http://, in that order.
 3. try to search for the string entered with the default search engine.
+
+The following search engines are configured:
+
+#+ATTR_HTML: :id search_engine_table
+| alias | search engine name | default |
+|-------+--------------------+---------|
+|       |                    |         |
