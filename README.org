@@ -3,7 +3,7 @@
 
 This is a Emacs key binding addon for Firefox 57+. These keybindings work in most webpages, but not in internal Firefox pages ('about:xxxx', new tab page).
 
-This extension can't modify keybindings already in use by Firefox. The easiest way to free those keybindings is to change the access key used by Firefox, either by setting [[http://kb.mozillazine.org/Ui.key.chromeAccess][Ui.key.chromeAccesss]] or [[http://kb.mozillazine.org/Ui.key.generalAccessKey][Ui.key.generalAccessKey]].
+Due to limitations of the current extension interface it is not possible to change keybindings for the Firefox user interface itself - the [[./doc/troubleshooting.org][troubleshooting guide]] has some tips for that, while the [[./doc/index.org][developer documentation]] is useful if you want to contribute. Shortcomings of the extension interface also require a page to have fully loaded before keybindings can work - i.e., adding a keybinding for aborting loading of a new tab is not possible.
 
 * Keybindings
 ** Scroll
