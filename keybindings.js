@@ -1,4 +1,55 @@
 var current_binding;
+var search_input_id = "emacsBindingsSearchInput";
+
+chrome.runtime.sendMessage({action: "log", msg: `Loading content script in ${document.title}`});
+
+// recursively generate ESC <key> compat mappings for M-<key>
+function generate_ESC_bindings(bindings){
+  var new_bindings = {}
+  var esc_bindings = {}
+
+  for (const key in bindings){
+    const value = bindings[key];
+    if (typeof value == "object"){
+      var submap = generate_ESC_bindings(value);
+      new_bindings[key] = submap;
+      continue;
+    }
+    new_bindings[key] = value;
+    if (key.startsWith("M-")){
+      esc_key = key.replace("M-", "");
+      esc_bindings[esc_key] = value;
+    }
+  }
+
+  if (Object.keys(esc_bindings).length > 0)
+    new_bindings['ESC'] = esc_bindings;
+
+  return new_bindings;
+}
+
+function create_search_dialog(){
+  var idString = "emacsBindingsSearchDialog";
+
+  let node = document.getElementById(idString);
+  if (node){
+    chrome.runtime.sendMessage({action: "log", msg: "Search box seems to exist already"});
+    node.showModal();
+  } else {
+    chrome.runtime.sendMessage({action: "log", msg: "Trying to create search box"});
+    var dialog = document.createElement("dialog");
+    dialog.id = idString;
+    dialog.role = 'dialog';
+    dialog.innerHTML = `
+Forward search:
+<form>
+<label><input type="search" name="${search_input_id}" id="${search_input_id}" autofocus/><br/>
+</form>
+`
+    document.body.appendChild(dialog);
+    dialog.showModal();
+  }
+}
 
 const focus_window = () => {
   if (document.activeElement) {
@@ -11,28 +62,48 @@ const focus_first_input = () => {
   document.forms[0].elements[i].focus();
 }
 
+// toplevel keybindings without modifier can break some sites -> make it optional
+var nomod_keybindings = {
+  "n": () => window.scrollBy(0, 30),
+  "p": () => window.scrollBy(0, -30),
+  "t": () => focus_first_input(),
+}
+
 var body_keybindings = {
   // scroll
   "C-f": () => window.scrollBy(30, 0),
   "C-b": () => window.scrollBy(-30, 0),
   "C-n": () => window.scrollBy(0, 30),
   "C-p": () => window.scrollBy(0, -30),
-  "n": () => window.scrollBy(0, 30),
-  "p": () => window.scrollBy(0, -30),
+  "M-<": () => window.scroll(0, 0),
+  "M->": () => window.scroll(0, document.body.scrollHeight),
 
   // refresh history
   "C-r": () => window.location.reload(),
   "C-F": () => window.history.forward(),
   "C-B": () => window.history.back(),
 
+  //"C-s": () => chrome.runtime.sendMessage({action: "search"}),
+  "C-s": () => create_search_dialog(),
+
   // tabs
-  "M-f": () => browser.runtime.sendMessage({action: "next_tab"}),
-  "M-b": () => browser.runtime.sendMessage({action: "previous_tab"}),
-  "t": () => focus_first_input(),
+  "M-f": () => chrome.runtime.sendMessage({action: "next_tab"}),
+  "M-b": () => chrome.runtime.sendMessage({action: "previous_tab"}),
+
+  "C-h": {
+    "?": () => chrome.runtime.sendMessage({action: "options_page"}),
+  },
 
   "C-x": {
-    "k": () => browser.runtime.sendMessage({action: "close_tab"}),
-    "C-f": () => browser.runtime.sendMessage({action: "new_tab"})
+    "k": () => chrome.runtime.sendMessage({action: "close_tab"}),
+    "C-f": () => chrome.runtime.sendMessage({action: "new_tab"})
+  },
+
+  "C-u": {
+    "C-x": {
+      "k": () => chrome.runtime.sendMessage({action: "close_window"}),
+      "C-f": () => chrome.runtime.sendMessage({action: "new_window"})
+    }
   }
 }
 
@@ -40,17 +111,37 @@ var textarea_keybindings = {
   "C-g": () => focus_window()
 };
 
+// initialise keybindings based on above tables + settings; this should
+// be redone in a way allowing re-init on changed settings. As the bindings
+// are per tab, and get updated on reload not high priority, though.
+var generated_keybindings = generate_ESC_bindings(body_keybindings);
+var generated_textarea_keybindings = {};
+
+// this needs to happen before potentially adding nomod keybindings - having
+// those on text fields would break stuff
+Object.assign(generated_textarea_keybindings, generated_keybindings);
+
+// add in top level bindings without modifier, if needed
+chrome.storage.sync.get("bindings_without_modifier", function (setting) {
+  if (setting["bindings_without_modifier"] == true){
+    Object.assign(generated_keybindings, nomod_keybindings);
+  }
+});
+
 /**
  * Turn KeyboardEvent to string.
  * @param {KeyboardEvent} e
  * @returns {String}
  */
 const get_key = (e) => {
-  var key = String.fromCharCode(e.keyCode),
+  var key = e.key,
       ctrl = e.ctrlKey ? "C-" : "",
-      meta = e.altKey ? "M-" : "",
-      shift = e.shiftKey ? "S-" : "";
-  return ctrl + meta + (shift ? key : key.toLowerCase());
+      meta = e.altKey ? "M-" : "";
+
+  if (e.key == "Escape")
+    return "ESC";
+  else
+    return ctrl + meta + key;
 }
 
 /**
@@ -60,19 +151,39 @@ const get_key = (e) => {
  */
 const get_current_bind = (target_type) =>
       (target_type == "input" || target_type == "textarea"
-       ? textarea_keybindings : body_keybindings);
+       ? generated_textarea_keybindings : generated_keybindings);
+
+document.addEventListener("keyup", (e) => {
+  var target_type = e.target.tagName.toLowerCase();
+  var target_id = e.target.id;
+
+  if (target_type == "input" && target_id == search_input_id){
+    var target_value = e.target.value;
+
+    if (target_value.length > 0){
+      chrome.runtime.sendMessage({action: "find", search: target_value});
+    } else {
+      chrome.runtime.sendMessage({action: "log", msg: "Search string too short"});
+    }
+  }
+}, true);
 
 document.addEventListener("keydown", (e) => {
+  if (e.key == "Shift" || e.key == "Control" || e.key == "Alt" || e.key == "Meta"){
+    chrome.runtime.sendMessage({action: "log", msg: "Ignoring modifier"});
+    return;
+  }
+
   var key = get_key(e),
       target_type = e.target.tagName.toLowerCase();
 
-  console.log(`user press key is ${key}, target type is ${target_type}`);
+  chrome.runtime.sendMessage({action: "log", msg: `user press key is ${key}, target type is ${target_type}`});
 
   if (!current_binding) {
     current_binding = get_current_bind(target_type);
   }
 
-  console.log(`current binding is ${Object.keys(current_binding)}`);
+  chrome.runtime.sendMessage({action: "log", msg: `current binding is ${Object.keys(current_binding)}`});
 
   var command = current_binding[key];
   switch (typeof command) {
@@ -91,8 +202,8 @@ document.addEventListener("keydown", (e) => {
   }
 }, true);
 
-browser.runtime.onMessage.addListener((msg) => {
-  console.log(`action: ${msg.action}`);
+chrome.runtime.onMessage.addListener((msg) => {
+  chrome.runtime.sendMessage({action: "log", msg: `action: ${msg.action}`});
   switch(msg.action) {
     case "focus_window":
       focus_window();

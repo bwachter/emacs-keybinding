@@ -1,0 +1,35 @@
+#+OPTIONS: html-postamble:nil toc:nil
+#+EXPORT_FILE_NAME: index.html
+
+[[../options.org][Add-on settings]]
+
+* Developer documentation
+** Browser target versions
+This extension mainly targets supported versions of Firefox. An overview about those can be found in the [[https://wiki.mozilla.org/index.php?title=Release_Management/Calendar&redirect=no][release calendar]].
+
+Typically ESRs are holding back what can be supported - so end of support from Mozilla side also may mean end of support from this extension to get rid of some workarounds.
+
+** Developing on Firefox
+Open a new tab and go to about:debugging (links to internal pages are not possible). Then "This Firefox" -> "Load Temporary Add-on...", navigate to add on folder, and select manifest.json.
+
+To get a debugger for the background script click on "Inspect".
+
+[[./firefox_about_debugging.png]]
+
+In case not all sources are displayed reload the page - missing background.js here will cause missing log entries.
+
+[[./firefox_debugger.png]]
+
+[[https://developer.mozilla.org][MDN]] has decent documentation about [[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions][writing browser extensions.]] The [[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension][first extension]] example is useful for a quick introduction on how things work, [[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Examples][the examples]] useful for going a bit more in depth.
+
+Both [[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Background_scripts][background scripts]] and [[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts][content scripts]] sections should be understood for this extension - a lot of required functionality can be only implemented in one location, so messages need to be passed around to make things work.
+
+The [[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Browser_support_for_JavaScript_APIs][API support page]] is very useful to determine the minimum version of Firefox this can support, as well as checking which other browsers this could be ported to with minimal effort.
+
+** Future development
+- Integrate with [[https://github.com/piroor/treestyletab/wiki/API-for-other-addons][Tree Style Tab]]
+- Adding a [[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Toolbar_button][toolbar button]] might offer some more options for search and URL entry
+- Add Chrome support. MDN has documentation on [[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Build_a_cross_browser_extension][writing cross browser extensions]]. Basic functionality is working on Chrome, things like search are harder to implement due to lacking APIs.
+
+** Firefox bugs relevant to this extension
+- [[https://bugzilla.mozilla.org/show_bug.cgi?id=1215061][#1215061 about unbreaking keyboard support after dropping XUL extensions]]

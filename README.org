@@ -1,18 +1,24 @@
-It only works on Mac OS.
+#+OPTIONS: html-postamble:nil toc:nil
+#+EXPORT_FILE_NAME: options.html
 
-This is a Emacs key binding addon for Firefox 57+
+This is a Emacs key binding addon for Firefox 57+. These keybindings work in most webpages, but not in internal Firefox pages ('about:xxxx', new tab page).
 
-Scroll
+Due to limitations of the current extension interface it is not possible to change keybindings for the Firefox user interface itself - the [[./doc/troubleshooting.org][troubleshooting guide]] has some tips for that, while the [[./doc/index.org][developer documentation]] is useful if you want to contribute. Shortcomings of the extension interface also require a page to have fully loaded before keybindings can work - i.e., adding a keybinding for aborting loading of a new tab is not possible.
 
-| keymap   | description  |
-|----------+--------------|
-| C-n or n | scroll down  |
-| C-p or p | scroll up    |
-| C-f      | scroll right |
-| C-b      | scroll left  |
+* Keybindings
+** Scroll
+
+| keymap   | description      |
+|----------+------------------|
+| C-n or n | scroll down      |
+| C-p or p | scroll up        |
+| C-f      | scroll right     |
+| C-b      | scroll left      |
+| M-<      | scroll to top    |
+| M->      | scroll to bottom |
 
 
-Tab
+** Tab
 
 | keymap  | description                   |
 |---------+-------------------------------|
@@ -22,14 +28,32 @@ Tab
 | C-x k   | close current tab             |
 | t       | focus on the first input area |
 
+** Window
 
-Others
+| keymap      | description          |
+|-------------+----------------------|
+| C-u C-x C-f | new window           |
+| C-u C-x k   | close current window |
 
-| keymap | description     |
-|--------+-----------------|
-| C-g    | focus on window |
-| C-r    | refresh         |
-| C-F    | history forward |
-| C-B    | history back    |
+** Others
 
-These keybindings work in most webpages except pages such as 'about:xxxx'.
+| keymap | description                |
+|--------+----------------------------|
+| C-g    | focus on window            |
+| C-r    | refresh                    |
+| C-F    | history forward            |
+| C-B    | history back               |
+| C-h ?  | display help/settings page |
+
+* Configuration
+
+#+BEGIN_EXPORT html
+<form>
+<label><input type="checkbox" name="own_tab_page" id="own_tab_page"/> Use custom 'new tab' page to allow overriding keybindings</label><br/>
+<label><input type="checkbox" name="debug_log" id="debug_log"/> Log debug messages to console</label><br/>
+<label><input type="checkbox" name="bindings_without_modifier" id="bindings_without_modifier"/> Allow top level keybindings without modifier</label><br/>
+</form>
+
+<script src="jquery-3.7.0.min.js"></script>
+<script src="options.js"></script>
+#+END_EXPORT

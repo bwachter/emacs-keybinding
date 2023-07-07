@@ -1,0 +1,29 @@
+#+OPTIONS: html-postamble:nil toc:nil
+#+EXPORT_FILE_NAME: new-tab.html
+#+TITLE: New tab
+
+This simple new tab page is provided by the Emacs keybindings extension to make custom keybindings work here. If you prefer the default tab page press C-h ? to open the extension settings, and uncheck "Use custom 'new tab' page to allow overriding keybindings".
+
+Enter URL or search term:
+
+#+BEGIN_EXPORT html
+<form id="form">
+<label><input type="search" name="urlbar" id="urlbar" style="width:100%" autofocus/><br/>
+</form>
+
+<script src="keybindings.js"></script>
+<script src="new-tab.js"></script>
+#+END_EXPORT
+
+Entered values will be processed as follows:
+
+1. if the entered string is a valid URL (including protocol specifier), open it.
+2. try if the entered string will become a valid URL for a HTTP GET request by prepending https:// and http://, in that order.
+3. try to search for the string entered with the default search engine.
+
+The following search engines are configured:
+
+#+ATTR_HTML: :id search_engine_table
+| alias | search engine name | default |
+|-------+--------------------+---------|
+|       |                    |         |
