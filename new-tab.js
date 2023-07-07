@@ -39,6 +39,7 @@ async function urlOrSearch(event){
       query: urlbar.value,
       disposition: "CURRENT_TAB"
     });
+    return;
   } catch (error) {
     chrome.runtime.sendMessage({action: "log", msg: `Search not working: ${error}`});
   }
@@ -48,6 +49,7 @@ async function urlOrSearch(event){
     browser.search.search({
       query: urlbar.value,
     });
+    return;
   } catch (error) {
     chrome.runtime.sendMessage({action: "log", msg: `Search not working: ${error}`});
   }
