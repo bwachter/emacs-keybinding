@@ -21,6 +21,13 @@
       "storage"
   ],
 
+  "browser_action": {
+    "default_icon": {
+      "19": "icons/emacs-19.png",
+      "38": "icons/emacs-38.png"
+    }
+  },
+
   "icons": {
     "48": "icons/emacs-48.png",
     "96": "icons/emacs-96.png"
