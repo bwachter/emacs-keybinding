@@ -69,6 +69,14 @@ var nomod_keybindings = {
   "t": () => focus_first_input(),
 }
 
+var experimental_keybindings_dialog = {
+  "C-s": () => create_search_dialog(),
+}
+
+var experimental_keybindings_popup = {
+  "C-s": () => chrome.runtime.sendMessage({action: "search"}),
+}
+
 var body_keybindings = {
   // scroll
   "C-f": () => window.scrollBy(30, 0),
@@ -82,9 +90,6 @@ var body_keybindings = {
   "C-r": () => window.location.reload(),
   "C-F": () => window.history.forward(),
   "C-B": () => window.history.back(),
-
-  //"C-s": () => chrome.runtime.sendMessage({action: "search"}),
-  "C-s": () => create_search_dialog(),
 
   // tabs
   "M-f": () => chrome.runtime.sendMessage({action: "next_tab"}),
@@ -125,6 +130,18 @@ Object.assign(generated_textarea_keybindings, generated_keybindings);
 chrome.storage.sync.get("bindings_without_modifier", function (setting) {
   if (setting["bindings_without_modifier"] == true){
     Object.assign(generated_keybindings, nomod_keybindings);
+  }
+});
+
+chrome.storage.sync.get("experimental", function (setting) {
+  if (setting["experimental"] == true){
+    chrome.storage.sync.get("preferred_input", function (setting) {
+      if (setting["preferred_input"] == "dialog"){
+        Object.assign(generated_keybindings, experimental_keybindings_dialog);
+      } else if (setting["preferred_input"] == "popup"){
+        Object.assign(generated_keybindings, experimental_keybindings_popup);
+      }
+    });
   }
 });
 

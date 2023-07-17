@@ -52,6 +52,13 @@ Due to limitations of the current extension interface it is not possible to chan
 <label><input type="checkbox" name="own_tab_page" id="own_tab_page"/> Use custom 'new tab' page to allow overriding keybindings</label><br/>
 <label><input type="checkbox" name="debug_log" id="debug_log"/> Log debug messages to console</label><br/>
 <label><input type="checkbox" name="bindings_without_modifier" id="bindings_without_modifier"/> Allow top level keybindings without modifier</label><br/>
+<label><input type="checkbox" name="experimental" id="experimental"/> Enable experimental features</label><br/>
+<!--
+<fieldset>
+<label><input type="radio" name="preferred_input" id="prefer_dialog" value="dialog"> Prefer HTML dialogs</label><br/>
+<label><input type="radio" name="preferred_input" id="prefer_popup" value="popup"> Prefer browser action popup</label><br/>
+</fieldset>
+-->
 </form>
 
 <script src="jquery-3.7.0.min.js"></script>

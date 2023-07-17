@@ -3,7 +3,9 @@ var options = {}
 var default_options = {
   own_tab_page: false,
   debug_log: false,
-  bindings_without_modifier: false
+  bindings_without_modifier: false,
+  experimental: false,
+  preferred_input: "dialog"
 }
 
 // this makes sure options are set without loading the options page
@@ -45,6 +47,12 @@ function handle_find(results){
     browser.find.highlightResults();
   }
 }
+
+function handleAction() {
+
+}
+
+browser.browserAction.onClicked.addListener(handleAction);
 
 chrome.runtime.onMessage.addListener((msg, sender) => {
 
@@ -106,10 +114,14 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
       var opening = chrome.runtime.openOptionsPage();
       opening.then(onSuccess, onError);
       break;
+    case "search":
+      browser.browserAction.setPopup({popup: "/popup/search.html"} );
+      browser.browserAction.openPopup();
+      break;
     case "find":
       if (msg.search.length > 0){
         logMsg(`Searching for: ${msg.search}`);
-        browser.find.find(msg.search).then(handle_find);
+        browser.find.find(msg.search, { includeRectData: true }).then(handle_find);
       }
       break;
     default:

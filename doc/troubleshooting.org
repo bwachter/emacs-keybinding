@@ -6,6 +6,8 @@
 * Setup and troubleshooting
 On recent Firefox versions this extension seems to be shadowing global Firefox keybindings. If this is not the case on your version the easiest way to free those keybindings is to change the access key used by Firefox, either by setting [[http://kb.mozillazine.org/Ui.key.chromeAccess][Ui.key.chromeAccesss]] or [[http://kb.mozillazine.org/Ui.key.generalAccessKey][Ui.key.generalAccessKey]] in [[https://support.mozilla.org/fi/kb/about-config-editor-firefox][about:config]].
 
+This extension now registers as an action to enable developing some more features. Interacting with the action button is optional - you can remove the button from the toolbar if you're not interested in using it.
+
 Firefox has a built in code editor. The keymap for this can be set by configuring [[https://firefox-source-docs.mozilla.org/devtools-user/keyboard_shortcuts/index.html][devtools.editor.keymap]] to "emacs".
 
 ** Emacs bindings in Firefox UI and text fields
