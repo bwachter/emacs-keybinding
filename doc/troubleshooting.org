@@ -4,7 +4,18 @@
 [[../options.org][Add-on settings]]
 
 * Setup and troubleshooting
-On recent Firefox versions this extension seems to be shadowing global Firefox keybindings. If this is not the case on your version the easiest way to free those keybindings is to change the access key used by Firefox, either by setting [[http://kb.mozillazine.org/Ui.key.chromeAccess][Ui.key.chromeAccesss]] or [[http://kb.mozillazine.org/Ui.key.generalAccessKey][Ui.key.generalAccessKey]] in [[https://support.mozilla.org/fi/kb/about-config-editor-firefox][about:config]].
+On recent Firefox versions this extension seems to be shadowing global Firefox keybindings. If this is not the case on your version the easiest way to free those keybindings is to change the access key used by Firefox, by setting one of the following - depending on browser version - in [[https://support.mozilla.org/fi/kb/about-config-editor-firefox][about:config]]:
+
+- Ui.key.accelKey
+- [[http://kb.mozillazine.org/Ui.key.chromeAccess][Ui.key.chromeAccesss]]
+- [[http://kb.mozillazine.org/Ui.key.generalAccessKey][Ui.key.generalAccessKey]]
+
+accelKey is badly documented, but seems to be taking the same keycodes as generalAccessKey:
+
+| Key     | Code |
+|---------+------|
+| Control |   17 |
+| Alt     |   18 |
 
 This extension now registers as an action to enable developing some more features. Interacting with the action button is optional - you can remove the button from the toolbar if you're not interested in using it.
 
