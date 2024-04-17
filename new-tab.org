@@ -4,7 +4,7 @@
 
 #+ATTR_HTML: :id introduction
 #+BEGIN_snippet
-This simple new tab page is provided by the Emacs keybindings extension to make custom keybindings work here. If you prefer the default tab page press C-h ? to open the extension settings, and uncheck "Use custom 'new tab' page to allow overriding keybindings".
+This simple new tab page is provided by the Emacs keybindings extension to make custom keybindings work here. If you prefer the default tab page press C-h ? to open the extension settings, and uncheck "Use custom 'new tab' page to allow overriding keybindings". You can also customise this page there - almost all page elements can be hidden.
 #+END_snippet
 
 #+ATTR_HTML: :id input_label
