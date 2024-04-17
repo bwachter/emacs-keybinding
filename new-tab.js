@@ -73,7 +73,7 @@ async function loadTopSites(){
       groupItem.innerHTML = `<a href="${topSite.url}">${topSite.title}</a>`
     } else {
       groupItem.className = "group-item";
-      groupItem.innerHTML = `<a href="${topSite.url}"><img src="${topSite.favicon}"><br />${topSite.title}</a>`
+      groupItem.innerHTML = `<a href="${topSite.url}"><div class="group-item-img"><img src="${topSite.favicon}"></div><br />${topSite.title}</a>`
     }
 
     container.appendChild(groupItem);
