@@ -1,6 +1,13 @@
 #+OPTIONS: html-postamble:nil toc:nil
 #+EXPORT_FILE_NAME: new-tab.html
 #+TITLE: New tab
+#+HTML_HEAD: <style type="text/css">
+#+HTML_HEAD: .group-item { float:left;width:150px;text-align:center }
+#+HTML_HEAD: .group-list-item { text-align:left;display:list-item;margin-left:1em }
+#+HTML_HEAD: .group-item img { max-width:100px;max-height:100px;border:1px solid;box-shadow: 10px 10px 10px #999 }
+#+HTML_HEAD: .icon-group a { text-decoration:none;text-align:left;visible:false }
+#+HTML_HEAD: .icon-group { position:relative; }
+#+HTML_HEAD: </style>
 
 #+ATTR_HTML: :id introduction
 #+BEGIN_snippet
@@ -42,8 +49,8 @@ The following search engines are configured:
 
 #+ATTR_HTML: :id top_sites
 #+BEGIN_snippet
-Top sites
 #+BEGIN_EXPORT html
+<h2>Frequently visited sites</h2>
 <div class="icon-group" id="top-site-group"></div>
 #+END_EXPORT
 #+END_snippet

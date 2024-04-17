@@ -67,11 +67,12 @@ async function loadTopSites(){
 
   for (const topSite of topSites){
     var groupItem = document.createElement("div");
-    groupItem.class = "group-item";
 
     if (options.nt_top_nofavicons){
+      groupItem.className = "group-list-item";
       groupItem.innerHTML = `<a href="${topSite.url}">${topSite.title}</a>`
     } else {
+      groupItem.className = "group-item";
       groupItem.innerHTML = `<a href="${topSite.url}"><img src="${topSite.favicon}"><br />${topSite.title}</a>`
     }
 

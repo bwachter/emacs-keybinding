@@ -86,7 +86,7 @@ Note that bindings without modifier keys are disabled per default. C-n/C-p cause
 <label><input type="checkbox" name="nt_top_blocked" id="nt_top_blocked"/> Include user blocked pages</label><br/>
 <label><input type="checkbox" name="nt_top_newtab" id="nt_top_newtab"/> Use same pages as shown on the default new tab page</label><br/>
 <label><input type="checkbox" name="nt_top_searchshortcuts" id="nt_top_searchshortcuts"/> Add search shortcuts</label><br/>
-<label><input type="checkbox" name="nt_top_nofavicons" id="nt_top_nofavicons"/> Disable favicons</label><br/>
+<label><input type="checkbox" name="nt_top_nofavicons" id="nt_top_nofavicons"/> Disable favicons. Links will be displayed as a list</label><br/>
 </form>
 #+END_EXPORT
 
