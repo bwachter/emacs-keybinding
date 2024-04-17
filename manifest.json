@@ -22,7 +22,8 @@
       "tabs",
       "activeTab",
       "search",
-      "storage"
+      "storage",
+      "topSites"
   ],
 
   "browser_action": {

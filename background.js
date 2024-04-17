@@ -10,7 +10,13 @@ var default_options = {
   nt_hide_search_engines: false,
   nt_hide_input_label: false,
   nt_hide_title: false,
-  nt_hide_url_instructions: false
+  nt_hide_url_instructions: false,
+  nt_hide_top_sites: false,
+  nt_top_pinned: false,
+  nt_top_blocked: false,
+  nt_top_newtab: false,
+  nt_top_searchshortcuts: false,
+  nt_top_nofavicons: false
 }
 
 // this makes sure options are set without loading the options page

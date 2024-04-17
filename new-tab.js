@@ -55,6 +55,32 @@ async function urlOrSearch(event){
   }
 }
 
+async function loadTopSites(){
+  let topSites = await browser.topSites.get({
+    includeFavicon: !options.nt_top_nofavicons,
+    includeBlocked: options.nt_top_blocked,
+    includePinned: options.nt_top_pinned,
+    includeSearchShortcuts: options.nt_top_searchshortcuts,
+    newtab: options.nt_top_newtab
+  });
+  let container = document.getElementById("top-site-group");
+
+  for (const topSite of topSites){
+    var groupItem = document.createElement("div");
+    groupItem.class = "group-item";
+
+    if (options.nt_top_nofavicons){
+      groupItem.innerHTML = `<a href="${topSite.url}">${topSite.title}</a>`
+    } else {
+      groupItem.innerHTML = `<a href="${topSite.url}"><img src="${topSite.favicon}"><br />${topSite.title}</a>`
+    }
+
+    container.appendChild(groupItem);
+
+    chrome.runtime.sendMessage({action: "log", msg: `Title: ${topSite.title}, URL: ${topSite.url}`});
+  }
+}
+
 async function loadSearchEngines(){
     let engines = await browser.search.get();
     let table = document.getElementById("search_engine_table");
@@ -119,6 +145,11 @@ function updatePage(){
       document.getElementById("search_engines").style.display = "none";
     } else {
       loadSearchEngines();
+    }
+    if (options.nt_hide_top_sites == true){
+      document.getElementById("top_sites").style.display = "none";
+    } else {
+      loadTopSites();
     }
   }
 }

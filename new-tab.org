@@ -39,3 +39,11 @@ The following search engines are configured:
 |-------+--------------------+---------|
 |       |                    |         |
 #+END_snippet
+
+#+ATTR_HTML: :id top_sites
+#+BEGIN_snippet
+Top sites
+#+BEGIN_EXPORT html
+<div class="icon-group" id="top-site-group"></div>
+#+END_EXPORT
+#+END_snippet
