@@ -32,4 +32,6 @@ The [[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Bro
 - Add Chrome support. MDN has documentation on [[https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Build_a_cross_browser_extension][writing cross browser extensions]]. Basic functionality is working on Chrome, things like search are harder to implement due to lacking APIs.
 
 ** Firefox bugs relevant to this extension
+- [[https://bugzilla.mozilla.org/show_bug.cgi?id=57805][#57805 about customisable keyboard shortcuts]]
 - [[https://bugzilla.mozilla.org/show_bug.cgi?id=1215061][#1215061 about unbreaking keyboard support after dropping XUL extensions]]
+- [[https://bugzilla.mozilla.org/show_bug.cgi?id=1320332][#1320332 about overriding keybindings from web extensions]]
