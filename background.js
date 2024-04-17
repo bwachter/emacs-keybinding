@@ -5,7 +5,12 @@ var default_options = {
   debug_log: false,
   bindings_without_modifier: false,
   experimental: false,
-  preferred_input: "dialog"
+  preferred_input: "dialog",
+  nt_hide_intro: false,
+  nt_hide_search_engines: false,
+  nt_hide_input_label: false,
+  nt_hide_title: false,
+  nt_hide_url_instructions: false
 }
 
 // this makes sure options are set without loading the options page

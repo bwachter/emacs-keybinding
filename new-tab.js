@@ -91,7 +91,44 @@ async function loadSearchEngines(){
     }
 }
 
+async function loadOptions(){
+  browser.runtime.sendMessage({
+    action: "options"
+  }).then((message) => {
+    state.options_ready = true;
+    options = message.response;
+    updatePage();
+  });
+}
+
+function updatePage(){
+  if (state.options_ready == true && state.dom_ready == true){
+    if (options.nt_hide_title == true){
+      document.getElementsByClassName("title")[0].style.display = "none";
+    }
+    if (options.nt_hide_intro == true){
+      document.getElementById("introduction").style.display = "none";
+    }
+    if (options.nt_hide_input_label == true){
+      document.getElementById("input_label").style.display = "none";
+    }
+    if (options.nt_hide_url_instructions == true){
+      document.getElementById("url_instructions").style.display = "none";
+    }
+    if (options.nt_hide_search_engines == true){
+      document.getElementById("search_engines").style.display = "none";
+    } else {
+      loadSearchEngines();
+    }
+  }
+}
+
+var options = {};
+var state = { dom_ready: false,
+              options_ready: false };
+
+loadOptions();
 const form = document.getElementById("form");
 form.addEventListener("submit", urlOrSearch);
 
-document.addEventListener("DOMContentLoaded", loadSearchEngines);
+document.addEventListener("DOMContentLoaded", () => { state.dom_ready = true; updatePage });

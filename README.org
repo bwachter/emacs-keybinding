@@ -65,7 +65,21 @@ Note that bindings without modifier keys are disabled per default. C-n/C-p cause
 </fieldset>
 -->
 </form>
+#+END_EXPORT
 
+** New tab page
+*** Hide page elements
+#+BEGIN_EXPORT html
+<form>
+<label><input type="checkbox" name="nt_hide_title" id="nt_hide_title"/> Title</label><br/>
+<label><input type="checkbox" name="nt_hide_intro" id="nt_hide_intro"/> Introduction text</label><br/>
+<label><input type="checkbox" name="nt_hide_input_label" id="nt_hide_input_label"/> URL bar label</label><br/>
+<label><input type="checkbox" name="nt_hide_url_instructions" id="nt_hide_url_instructions"/> URL processing information</label><br/>
+<label><input type="checkbox" name="nt_hide_search_engines" id="nt_hide_search_engines"/> Search engine overview</label><br/>
+</form>
+#+END_EXPORT
+
+#+BEGIN_EXPORT html
 <script src="jquery-3.7.0.min.js"></script>
 <script src="options.js"></script>
 #+END_EXPORT
