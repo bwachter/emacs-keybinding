@@ -54,7 +54,7 @@ function handleAction() {
 
 browser.browserAction.onClicked.addListener(handleAction);
 
-chrome.runtime.onMessage.addListener((msg, sender) => {
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   if (msg.action != "log")
     logMsg(`action: ${msg.action}`);
@@ -70,6 +70,9 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
         logMsg(`setting ${msg.key} to ${msg.value}`);
         options[msg.key] = msg.value;
       }
+      break;
+    case "options":
+      sendResponse({ response: options });
       break;
     case "next_tab":
       chrome.tabs.query({currentWindow: true}).then(
