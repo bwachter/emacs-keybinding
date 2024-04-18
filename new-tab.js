@@ -83,39 +83,39 @@ async function loadTopSites(){
 }
 
 async function loadSearchEngines(){
-    let engines = await browser.search.get();
-    let table = document.getElementById("search_engine_table");
+  let engines = await browser.search.get();
+  let table = document.getElementById("search_engine_table");
 
-    let keys = Object.keys(engines);
+  let keys = Object.keys(engines);
 
+  chrome.runtime.sendMessage({action: "log", msg: `Table: ${keys}`});
+
+  // filling the table is a bit more complicated as we start with one empty
+  // row for getting proper formatting exported from org-mode
+  for (const engine of engines){
+    let keys = Object.keys(engine);
     chrome.runtime.sendMessage({action: "log", msg: `Table: ${keys}`});
 
-    // filling the table is a bit more complicated as we start with one empty
-    // row for getting proper formatting exported from org-mode
-    for (const engine of engines){
-        let keys = Object.keys(engine);
-        chrome.runtime.sendMessage({action: "log", msg: `Table: ${keys}`});
+    chrome.runtime.sendMessage({action: "log", msg: `Search engine: ${engine.name} in ${table.rows.length}`});
+    let row, cell0, cell1, cell2;
+    if (table.rows.length == 2){
+      row = table.rows[1];
+      new_row = table.insertRow(table.rows.length);
+    } else {
+      row = table.rows[table.rows.length - 1];
+      cell0 = row.insertCell(0);
+      cell1 = row.insertCell(1);
+      cell2 = row.insertCell(2);
 
-        chrome.runtime.sendMessage({action: "log", msg: `Search engine: ${engine.name} in ${table.rows.length}`});
-        let row, cell0, cell1, cell2;
-        if (table.rows.length == 2){
-            row = table.rows[1];
-            new_row = table.insertRow(table.rows.length);
-        } else {
-            row = table.rows[table.rows.length - 1];
-            cell0 = row.insertCell(0);
-            cell1 = row.insertCell(1);
-            cell2 = row.insertCell(2);
-
-            if (table.rows.length <= engines.length)
-                new_row = table.insertRow(table.rows.length);
-        }
-
-        row.cells[0].innerHTML = engine.alias;
-        row.cells[1].innerHTML = engine.name;
-        if (engine.isDefault)
-            row.cells[2].innerHTML = "x";
+      if (table.rows.length <= engines.length)
+        new_row = table.insertRow(table.rows.length);
     }
+
+    row.cells[0].innerHTML = engine.alias;
+    row.cells[1].innerHTML = engine.name;
+    if (engine.isDefault)
+      row.cells[2].innerHTML = "x";
+  }
 }
 
 async function loadOptions(){

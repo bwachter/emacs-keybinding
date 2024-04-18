@@ -108,7 +108,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     case "new_tab":
       if ('own_tab_page' in options && options['own_tab_page'] == true){
         chrome.tabs.create({active:true,
-                             url: "new-tab.html"})
+                            url: "new-tab.html"})
       } else
         chrome.tabs.create({active:true})
       break;
