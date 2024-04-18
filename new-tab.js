@@ -133,6 +133,12 @@ function registerHistoryCompleter(input){
 
   chrome.runtime.sendMessage({action: "log", msg: `Registering URL input handler`});
   input.addEventListener("input", async function(event) {
+    if (this.value == ""){
+      destroyCompletions();
+      activeElement=-1;
+      return;
+    }
+
     chrome.runtime.sendMessage({action: "log", msg: `URL value: ${this.value}`});
     let completions = await browser.history.search({ text: this.value });
     chrome.runtime.sendMessage({action: "log", msg: `URL completions: ${JSON.stringify(completions)}`});
