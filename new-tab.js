@@ -128,8 +128,58 @@ async function loadOptions(){
   });
 }
 
+function registerHistoryCompleter(input){
+  chrome.runtime.sendMessage({action: "log", msg: `Registering URL input handler`});
+  input.addEventListener("input", async function(event) {
+    chrome.runtime.sendMessage({action: "log", msg: `URL value: ${this.value}`});
+    let completions = await browser.history.search({ text: this.value });
+    chrome.runtime.sendMessage({action: "log", msg: `URL completions: ${JSON.stringify(completions)}`});
+    destroyCompletions();
+
+    var container = document.createElement("div");
+    container.className="history-completion-list";
+    container.id="history-completions";
+    this.parentNode.appendChild(container);
+
+
+    for (const item of completions){
+      var completion = document.createElement("div");
+      completion.innerHTML = item.url;
+      container.appendChild(completion);
+    }
+  });
+
+  input.addEventListener("keydown", function(event) {
+    //chrome.runtime.sendMessage({action: "log", msg: `${event.keyCode}`});
+    if (event.keyCode == 27) { // ESC
+      // TODO: also handle C-g
+      destroyCompletions();
+    }
+    if (event.keyCode == 40) {
+      chrome.runtime.sendMessage({action: "log", msg: `Down pressed`});
+    }
+  });
+
+  function destroyCompletions(list){
+    var completions = document.getElementsByClassName("history-completion-list");
+
+    for (var i=0;i<completions.length;i++){
+      // this is required to avoid deleting a list by clicking into it
+      if (list != completions[i]){
+        completions[i].parentNode.removeChild(completions[i]);
+      }
+    }
+  }
+
+  document.addEventListener("click", function(event){
+    destroyCompletions(event.target);
+  });
+
+}
+
 function updatePage(){
   if (state.options_ready == true && state.dom_ready == true){
+    registerHistoryCompleter(document.getElementById("urlbar"));
     if (options.nt_hide_title == true){
       document.getElementsByClassName("title")[0].style.display = "none";
     }

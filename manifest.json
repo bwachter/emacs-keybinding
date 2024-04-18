@@ -18,11 +18,12 @@
   },
 
   "permissions": [
-      "find",
-      "tabs",
       "activeTab",
+      "find",
+      "history",
       "search",
       "storage",
+      "tabs",
       "topSites"
   ],
 

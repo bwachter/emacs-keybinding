@@ -8,6 +8,8 @@
 #+HTML_HEAD: .group-item img { max-width:80%;max-height:80%;display:block;margin:auto;min-width:50% }
 #+HTML_HEAD: .icon-group a { text-decoration:none;text-align:center }
 #+HTML_HEAD: .icon-group { position:relative; }
+#+HTML_HEAD: .history-completion-list div { background-color:#fff;padding:10px }
+#+HTML_HEAD: .history-completion-list { position:absolute;z-index:99;top:100%;left:0;right;0;border;1px solid }
 #+HTML_HEAD: </style>
 
 #+ATTR_HTML: :id introduction
@@ -21,8 +23,10 @@ Enter URL or search term:
 #+END_snippet
 
 #+BEGIN_EXPORT html
-<form id="form">
+<form autocomplete="off" id="form">
+<div style="position:relative;display:inline-block;width:100%">
 <label><input type="search" name="urlbar" id="urlbar" style="width:100%" autofocus/><br/>
+</div>
 </form>
 
 <script src="keybindings.js"></script>
