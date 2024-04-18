@@ -173,12 +173,19 @@ function registerHistoryCompleter(input){
     } else if (event.keyCode == 38) {
       activateElement(-1);
     } else if (event.keyCode == 13) {
-      if (options.nt_url_autosubmit == false){
-        event.preventDefault();
+      if (activeCompletionLists().length > 0){
+        if (options.nt_url_autosubmit == false){
+          event.preventDefault();
+        }
+        clickActiveElement();
       }
-      clickActiveElement();
     }
   });
+
+  function activeCompletionLists(){
+    var completions_array = document.getElementsByClassName("history-completion-list");
+    return completions_array;
+  }
 
   function clickActiveElement(){
     var completions_array = document.getElementsByClassName("history-completion-list");
