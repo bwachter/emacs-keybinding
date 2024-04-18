@@ -1,16 +1,16 @@
 var options = {}
 
 var default_options = {
-  own_tab_page: false,
+  own_tab_page: true,
   debug_log: false,
   bindings_without_modifier: false,
   experimental: false,
   preferred_input: "dialog",
-  nt_url_autosubmit: false,
+  nt_url_autosubmit: true,
   nt_hide_intro: false,
   nt_hide_search_engines: false,
   nt_hide_input_label: false,
-  nt_hide_title: false,
+  nt_hide_title: true,
   nt_hide_url_instructions: false,
   nt_hide_top_sites: false,
   nt_top_pinned: false,
