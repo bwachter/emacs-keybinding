@@ -257,6 +257,9 @@ function updatePage(){
     if (options.nt_hide_intro == true){
       document.getElementById("introduction").style.display = "none";
     }
+    if (options.nt_hide_github == true){
+      document.getElementById("github").style.display = "none";
+    }
     if (options.nt_hide_input_label == true){
       document.getElementById("input_label").style.display = "none";
     }

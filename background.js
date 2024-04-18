@@ -8,6 +8,7 @@ var default_options = {
   preferred_input: "dialog",
   nt_url_autosubmit: true,
   nt_hide_intro: false,
+  nt_hide_github: false,
   nt_hide_search_engines: false,
   nt_hide_input_label: false,
   nt_hide_title: true,

@@ -78,6 +78,7 @@ Note that bindings without modifier keys are disabled per default. C-n/C-p cause
 <form>
 <label><input type="checkbox" name="nt_hide_title" id="nt_hide_title"/> Title</label><br/>
 <label><input type="checkbox" name="nt_hide_intro" id="nt_hide_intro"/> Introduction text</label><br/>
+<label><input type="checkbox" name="nt_hide_github" id="nt_hide_github"/> Github issue/contribution text</label><br/>
 <label><input type="checkbox" name="nt_hide_input_label" id="nt_hide_input_label"/> URL bar label</label><br/>
 <label><input type="checkbox" name="nt_hide_url_instructions" id="nt_hide_url_instructions"/> URL processing information</label><br/>
 <label><input type="checkbox" name="nt_hide_search_engines" id="nt_hide_search_engines"/> Search engine overview</label><br/>
