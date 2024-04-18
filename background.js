@@ -6,6 +6,7 @@ var default_options = {
   bindings_without_modifier: false,
   experimental: false,
   preferred_input: "dialog",
+  nt_url_autosubmit: false,
   nt_hide_intro: false,
   nt_hide_search_engines: false,
   nt_hide_input_label: false,

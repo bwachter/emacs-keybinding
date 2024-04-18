@@ -129,12 +129,15 @@ async function loadOptions(){
 }
 
 function registerHistoryCompleter(input){
+  var activeElement=-1;
+
   chrome.runtime.sendMessage({action: "log", msg: `Registering URL input handler`});
   input.addEventListener("input", async function(event) {
     chrome.runtime.sendMessage({action: "log", msg: `URL value: ${this.value}`});
     let completions = await browser.history.search({ text: this.value });
     chrome.runtime.sendMessage({action: "log", msg: `URL completions: ${JSON.stringify(completions)}`});
     destroyCompletions();
+    activeElement=-1;
 
     var container = document.createElement("div");
     container.className="history-completion-list";
@@ -144,7 +147,18 @@ function registerHistoryCompleter(input){
 
     for (const item of completions){
       var completion = document.createElement("div");
-      completion.innerHTML = item.url;
+      // order of those input element matters as extraction of URL happens based
+      // on index later on
+      if (item.title == null) item.title="";
+
+      completion.innerHTML = `<b>${item.title}</b><br/>${item.url}
+<input type='hidden' id='url' value='${item.url}'/>
+<input type='hidden' id='title' value='${item.title}'/>
+<input type='hidden' id='visitCount' value='${item.visitCount}'/>
+<input type='hidden' id='lastVisitTime' value='${item.lastVisitTime}'/>`
+      completion.addEventListener("click", function(event){
+        input.value = this.getElementsByTagName("input")[0].value;
+      });
       container.appendChild(completion);
     }
   });
@@ -154,11 +168,55 @@ function registerHistoryCompleter(input){
     if (event.keyCode == 27) { // ESC
       // TODO: also handle C-g
       destroyCompletions();
-    }
-    if (event.keyCode == 40) {
-      chrome.runtime.sendMessage({action: "log", msg: `Down pressed`});
+    } else if (event.keyCode == 40) {
+      activateElement(1);
+    } else if (event.keyCode == 38) {
+      activateElement(-1);
+    } else if (event.keyCode == 13) {
+      if (options.nt_url_autosubmit == false){
+        event.preventDefault();
+      }
+      clickActiveElement();
     }
   });
+
+  function clickActiveElement(){
+    var completions_array = document.getElementsByClassName("history-completion-list");
+
+    if (completions_array.length != 1){
+      chrome.runtime.sendMessage({action: "log", msg: `Weird element count: ${completions_array.length}`});
+    } else {
+      var completions = completions_array[0].getElementsByTagName("div");
+
+      if (activeElement >= 0 && activeElement < completions.length){
+        completions[activeElement].click();
+      }
+    }
+  }
+
+  function activateElement(relIndex){
+    var completions_array = document.getElementsByClassName("history-completion-list");
+
+    if (completions_array.length != 1){
+      chrome.runtime.sendMessage({action: "log", msg: `Weird element count: ${completions_array.length}`});
+    } else {
+      activeElement+=relIndex;
+
+      var completions = completions_array[0].getElementsByTagName("div");
+      if (activeElement >= completions.length) activeElement = 0;
+      if (activeElement <0) activeElement = completions.length-1;
+
+      for (var i=0;i<completions.length;i++){
+        if (i==activeElement){
+          chrome.runtime.sendMessage({action: "log", msg: `Activating element ${i}`});
+          completions[i].classList.add("history-completion-active");
+        } else {
+          chrome.runtime.sendMessage({action: "log", msg: `Disabling element ${i}, active is ${activeElement}`});
+          completions[i].classList.remove("history-completion-active");
+        }
+      }
+    }
+  }
 
   function destroyCompletions(list){
     var completions = document.getElementsByClassName("history-completion-list");

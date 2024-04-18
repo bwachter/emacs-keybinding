@@ -10,6 +10,8 @@
 #+HTML_HEAD: .icon-group { position:relative; }
 #+HTML_HEAD: .history-completion-list div { background-color:#fff;padding:10px }
 #+HTML_HEAD: .history-completion-list { position:absolute;z-index:99;top:100%;left:0;right;0;border;1px solid }
+#+HTML_HEAD: .history-completion-list div:hover { background-color:grey }
+#+HTML_HEAD: .history-completion-active { background-color:grey !important}
 #+HTML_HEAD: </style>
 
 #+ATTR_HTML: :id introduction
