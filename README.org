@@ -3,7 +3,7 @@
 
 This is a Emacs key binding addon for Firefox 57+. These keybindings work in most webpages, but not in internal Firefox pages ('about:xxxx', new tab page).
 
-Due to limitations of the current extension interface it is not possible to change keybindings for the Firefox user interface itself - and overriding only works for some of the keys, varying between platforms. If bindings are not working please check the [[./doc/troubleshooting.org][troubleshooting guide]] for tips on how to change Firefox configuration no disable conflicting Firefox bindings.
+Due to limitations of the current extension interface it is not possible to change keybindings for the Firefox user interface itself - and overriding only works for some of the keys, varying between platforms. If bindings are not working please check the [[./doc/troubleshooting.org][troubleshooting guide]] for tips on how to change Firefox configuration to disable conflicting Firefox bindings.
 
 Shortcomings of the extension interface also require a page to have fully loaded before keybindings can work - i.e., adding a keybinding for aborting loading of a new tab is not possible. Future versions may try workarounds for some keybindings by defining command keys.
 
