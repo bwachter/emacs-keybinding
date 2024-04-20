@@ -15,6 +15,7 @@ var default_options = {
   nt_hide_title: true,
   nt_hide_url_instructions: false,
   nt_hide_top_sites: false,
+  nt_top_num: 10,
   nt_top_pinned: false,
   nt_top_blocked: false,
   nt_top_newtab: false,

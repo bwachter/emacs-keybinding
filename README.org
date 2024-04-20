@@ -89,6 +89,7 @@ Note that bindings without modifier keys are disabled per default. C-n/C-p cause
 *** Top visited pages
 #+BEGIN_EXPORT html
 <form>
+<label>Number of entries <input type="number" name="nt_top_num" id="nt_top_num" min="5"/></label><br/>
 <label><input type="checkbox" name="nt_top_pinned" id="nt_top_pinned"/> Include pinned pages</label><br/>
 <label><input type="checkbox" name="nt_top_blocked" id="nt_top_blocked"/> Include user blocked pages</label><br/>
 <label><input type="checkbox" name="nt_top_newtab" id="nt_top_newtab"/> Use same pages as shown on the default new tab page</label><br/>

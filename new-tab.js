@@ -61,7 +61,8 @@ async function loadTopSites(){
     includeBlocked: options.nt_top_blocked,
     includePinned: options.nt_top_pinned,
     includeSearchShortcuts: options.nt_top_searchshortcuts,
-    newtab: options.nt_top_newtab
+    newtab: options.nt_top_newtab,
+    limit: options.nt_top_num
   });
   let container = document.getElementById("top-site-group");
 
