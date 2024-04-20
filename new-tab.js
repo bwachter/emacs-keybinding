@@ -153,9 +153,9 @@ function registerHistoryCompleter(input){
     container.id="history-completions";
     this.parentNode.appendChild(container);
 
-
     for (const item of completions){
       var completion = document.createElement("div");
+      completion.className = "history-completion-element";
       // order of those input element matters as extraction of URL happens based
       // on index later on
       if (item.title == null) item.title="";
