@@ -128,7 +128,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       if (msg.key in options && options[msg.key] != msg.value){
         logMsg(`setting ${msg.key} to ${msg.value}`);
         options[msg.key] = msg.value;
-      }
+        sendResponse(true);
+      } else
+        sendResponse(false);
       break;
     case "options":
       sendResponse({ response: options });
@@ -139,8 +141,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
           let next_tab = tabs[current_tab.index+1] || tabs[0];
           if (next_tab) {
             chrome.tabs.update(next_tab.id, {active:true})
-              .then(() => chrome.tabs.sendMessage(next_tab.id, {action: "focus_window"}))
-          }
+              .then(() => chrome.tabs.sendMessage(next_tab.id, {action: "focus_window"}));
+            sendResponse(true);
+          } else
+            sendResponse(false);
         });
       break;
     case "previous_tab":
@@ -149,8 +153,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
           let previous_tab = tabs[current_tab.index-1] || tabs[tabs.length-1];
           if (previous_tab){
             chrome.tabs.update(previous_tab.id, {active:true})
-              .then(() => chrome.tabs.sendMessage(previous_tab.id, {action: "focus_window"}))
-          }
+              .then(() => chrome.tabs.sendMessage(previous_tab.id, {action: "focus_window"}));
+            sendResponse(true);
+          } else
+            sendResponse(false);
         });
       break;
     case "new_tab":
@@ -159,8 +165,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
                             url: "new-tab.html"})
       } else
         chrome.tabs.create({active:true})
+      sendResponse(true);
       break;
     case "close_tab":
+      // TODO: this triggers a promise rejected error
+      sendResponse(true);
       chrome.tabs.remove(current_tab.id);
       break;
     case "new_window":
@@ -168,25 +177,32 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         chrome.windows.create({url: "new-tab.html"})
       } else
         chrome.windows.create();
+      sendResponse(true);
       break;
     case "close_window":
       chrome.windows.remove(current_tab.windowId);
+      sendResponse(true);
       break;
     case "options_page":
       var opening = chrome.runtime.openOptionsPage();
       opening.then(onSuccess, onError);
+      sendResponse(true);
       break;
     case "search":
       browser.browserAction.setPopup({popup: "/popup/search.html"} );
       browser.browserAction.openPopup();
+      sendResponse(true);
       break;
     case "find":
       if (msg.search.length > 0){
         logMsg(`Searching for: ${msg.search}`);
         browser.find.find(msg.search, { includeRectData: true }).then(handle_find);
-      }
+        sendResponse(true);
+      } else
+        sendResponse(false);
       break;
     default:
       logMsg(`Unknown action: ${msg.action}`);
+      sendResponse(false);
   }
 });
