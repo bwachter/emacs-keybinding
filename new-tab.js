@@ -139,7 +139,9 @@ function registerHistoryCompleter(input){
       return;
     }
 
-    chrome.runtime.sendMessage({action: "log", msg: `URL value: ${this.value}`});
+    let historyDate = new Date();
+    historyDate.setDate(historyDate.getDate() - options.nt_history_age_days);
+    chrome.runtime.sendMessage({action: "log", msg: `URL value: ${this.value}, until ${historyDate}`});
     let completions = await browser.history.search({ text: this.value });
     chrome.runtime.sendMessage({action: "log", msg: `URL completions: ${JSON.stringify(completions)}`});
     destroyCompletions();

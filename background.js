@@ -7,6 +7,7 @@ var default_options = {
   experimental: false,
   preferred_input: "dialog",
   nt_url_autosubmit: true,
+  nt_history_age_days: 30,
   nt_hide_intro: false,
   nt_hide_github: false,
   nt_hide_search_engines: false,
