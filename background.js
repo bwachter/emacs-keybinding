@@ -9,6 +9,7 @@ var default_options = {
   debug_level_search_engines: 1,
   debug_level_top_sites: 1,
   debug_level_history: 1,
+  debug_level_theme: 1,
   bindings_without_modifier: false,
   experimental: false,
   preferred_input: "dialog",

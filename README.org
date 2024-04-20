@@ -116,11 +116,13 @@ There is no global default debug level - but unticking the checkbox below will e
 <label>Content script <input type="number" name="debug_level_content" id="debug_level_content" min="0" max="4" /></label><br/>
 <label>Search engines <input type="number" name="debug_level_search_engines" id="debug_level_search_engines" min="0" max="4" /></label><br/>
 <label>Top sites <input type="number" name="debug_level_top_sites" id="debug_level_top_sites" min="0" max="4" /></label><br/>
-<label>Visit history <input type="number" name="debug_level_history" id="debug_level_top_history" min="0" max="4" /></label><br/>
+<label>Visit history <input type="number" name="debug_level_history" id="debug_level_history" min="0" max="4" /></label><br/>
+<label>Theme <input type="number" name="debug_level_theme" id="debug_level_theme" min="0" max="4" /></label><br/>
 </form>
 #+END_EXPORT
 
 #+BEGIN_EXPORT html
 <script src="jquery-3.7.0.min.js"></script>
+<script src="theme.js"></script>
 <script src="options.js"></script>
 #+END_EXPORT

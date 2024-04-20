@@ -38,6 +38,7 @@ Enter URL or search term:
 </form>
 
 <script src="keybindings.js"></script>
+<script src="theme.js"></script>
 <script src="new-tab.js"></script>
 #+END_EXPORT
 
