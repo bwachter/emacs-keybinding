@@ -55,7 +55,6 @@ Note that bindings without modifier keys are disabled per default. C-n/C-p cause
 #+BEGIN_EXPORT html
 <form>
 <label><input type="checkbox" name="own_tab_page" id="own_tab_page"/> Use custom 'new tab' page to allow overriding keybindings</label><br/>
-<label><input type="checkbox" name="debug_log" id="debug_log"/> Log debug messages to console</label><br/>
 <label><input type="checkbox" name="bindings_without_modifier" id="bindings_without_modifier"/> Allow top level keybindings without modifier</label><br/>
 <label><input type="checkbox" name="experimental" id="experimental"/> Enable experimental features</label><br/>
 <!--
@@ -98,6 +97,28 @@ Note that bindings without modifier keys are disabled per default. C-n/C-p cause
 </form>
 #+END_EXPORT
 
+** Developer settings
+The following debug levels are available, and can be configured per subsystem below:
+
+| 0 | Off      |
+| 1 | Errors   |
+| 2 | Warnings |
+| 3 | Info     |
+| 4 | Debug    |
+
+There is no global default debug level - but unticking the checkbox below will enable or disable all debug logging.
+
+#+BEGIN_EXPORT html
+<form>
+<label><input type="checkbox" name="debug_log" id="debug_log"/> Log debug messages to console</label><br/>
+<label>Backend <input type="number" name="debug_level_backend" id="debug_level_backend" min="0" max="4" /></label><br/>
+<label>Keybindings <input type="number" name="debug_level_keybinding" id="debug_level_keybinding" min="0" max="4" /></label><br/>
+<label>Content script <input type="number" name="debug_level_content" id="debug_level_content" min="0" max="4" /></label><br/>
+<label>Search engines <input type="number" name="debug_level_search_engines" id="debug_level_search_engines" min="0" max="4" /></label><br/>
+<label>Top sites <input type="number" name="debug_level_top_sites" id="debug_level_top_sites" min="0" max="4" /></label><br/>
+<label>Visit history <input type="number" name="debug_level_history" id="debug_level_top_history" min="0" max="4" /></label><br/>
+</form>
+#+END_EXPORT
 
 #+BEGIN_EXPORT html
 <script src="jquery-3.7.0.min.js"></script>

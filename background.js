@@ -3,6 +3,12 @@ var options = {}
 var default_options = {
   own_tab_page: true,
   debug_log: false,
+  debug_level_keybinding: 1,
+  debug_level_backend: 1,
+  debug_level_content: 1,
+  debug_level_search_engines: 1,
+  debug_level_top_sites: 1,
+  debug_level_history: 1,
   bindings_without_modifier: false,
   experimental: false,
   preferred_input: "dialog",
@@ -47,8 +53,39 @@ function onError(error){
 }
 
 function logMsg(msg){
-  if ('debug_log' in options && options['debug_log'] == true)
-    console.log(`Emacs-keybinding: ${msg}`);
+  if ('debug_log' in options && options['debug_log'] == true){
+    const msgType = typeof(msg);
+    if (msgType == "string")
+      console.log(`Emacs-keybinding: ${msg}`);
+    else if (msgType == "object"){
+      const keyName = 'debug_level_' + msg['subsystem'];
+      if (keyName in options){
+        var msgLevel = 3; // set to info as default
+        if ('level' in msg){
+          if (isNaN(msg.level)){
+            if (msg.level == "error")
+              msgLevel = 1;
+            else if (msg.level == "warning")
+              msgLevel = 2;
+            else if (msg.level == "info")
+              msgLevel = 3;
+            else if (msg.level == "debug")
+              msgLevel = 4
+          } else
+            msgLevel = msg.level;
+        }
+
+        debugLevel = options[keyName];
+
+        if (msgLevel <= debugLevel)
+          console.log(`Emacs-keybinding[${msg.subsystem}:${msg.level}] ${msg.message}`);
+      } else {
+        console.log(`Emacs-keybinding: Log subsystem missing: ${msg.subsystem}`);
+      }
+    } else {
+      console.log(`Emacs-keybinding: Unhandled message type ${msgType}`);
+    }
+  }
 }
 
 /* Eventually this should
@@ -72,7 +109,7 @@ browser.browserAction.onClicked.addListener(handleAction);
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   if (msg.action != "log")
-    logMsg(`action: ${msg.action}`);
+    logMsg({'subsystem': 'backend', 'message': msg.action});
 
   let current_tab = sender.tab;
 

@@ -79,7 +79,11 @@ async function loadTopSites(){
 
     container.appendChild(groupItem);
 
-    chrome.runtime.sendMessage({action: "log", msg: `Title: ${topSite.title}, URL: ${topSite.url}`});
+    chrome.runtime.sendMessage({action: "log", msg: {
+      'subsystem': 'top_sites',
+      'level': 'debug',
+      'message': `Title: ${topSite.title}, URL: ${topSite.url}`
+    }});
   }
 }
 
@@ -89,15 +93,27 @@ async function loadSearchEngines(){
 
   let keys = Object.keys(engines);
 
-  chrome.runtime.sendMessage({action: "log", msg: `Table: ${keys}`});
+  chrome.runtime.sendMessage({action: "log", msg: {
+    'subsystem': 'search_engines',
+    'level': 'debug',
+    'message': `Table: ${keys}`
+  }});
 
   // filling the table is a bit more complicated as we start with one empty
   // row for getting proper formatting exported from org-mode
   for (const engine of engines){
     let keys = Object.keys(engine);
-    chrome.runtime.sendMessage({action: "log", msg: `Table: ${keys}`});
+    chrome.runtime.sendMessage({action: "log", msg: {
+      'subsystem': 'search_engines',
+      'level': 'debug',
+      'message': `Table: ${keys}`
+    }});
 
-    chrome.runtime.sendMessage({action: "log", msg: `Search engine: ${engine.name} in ${table.rows.length}`});
+    chrome.runtime.sendMessage({action: "log", msg: {
+      'subsystem': 'search_engines',
+      'level': 'debug',
+      'message': `Search engine: ${engine.name} in ${table.rows.length}`
+    }});
     let row, cell0, cell1, cell2;
     if (table.rows.length == 2){
       row = table.rows[1];
@@ -132,7 +148,11 @@ async function loadOptions(){
 function registerHistoryCompleter(input){
   var activeElement=-1;
 
-  chrome.runtime.sendMessage({action: "log", msg: `Registering URL input handler`});
+  chrome.runtime.sendMessage({action: "log", msg: {
+    'subsystem': 'history',
+    'level': 'debug',
+    'message': `Registering URL input handler`
+  }});
   input.addEventListener("input", async function(event) {
     if (this.value == ""){
       destroyCompletions();
@@ -142,9 +162,17 @@ function registerHistoryCompleter(input){
 
     let historyDate = new Date();
     historyDate.setDate(historyDate.getDate() - options.nt_history_age_days);
-    chrome.runtime.sendMessage({action: "log", msg: `URL value: ${this.value}, until ${historyDate}`});
+    chrome.runtime.sendMessage({action: "log", msg: {
+      'subsystem': 'history',
+      'level': 'debug',
+      'message': `URL value: ${this.value}, until ${historyDate}`
+    }});
     let completions = await browser.history.search({ text: this.value });
-    chrome.runtime.sendMessage({action: "log", msg: `URL completions: ${JSON.stringify(completions)}`});
+    chrome.runtime.sendMessage({action: "log", msg: {
+      'subsystem': 'history',
+      'level': 'debug',
+      'message': `URL completions: ${JSON.stringify(completions)}`
+    }});
     destroyCompletions();
     activeElement=-1;
 
@@ -204,7 +232,11 @@ function registerHistoryCompleter(input){
     var completions_array = document.getElementsByClassName("history-completion-list");
 
     if (completions_array.length != 1){
-      chrome.runtime.sendMessage({action: "log", msg: `Weird element count: ${completions_array.length}`});
+      chrome.runtime.sendMessage({action: "log", msg: {
+        'subsystem': 'history',
+        'level': 'warning',
+        'message':`Weird element count: ${completions_array.length}`
+      }});
     } else {
       var completions = completions_array[0].getElementsByTagName("div");
 
@@ -218,7 +250,11 @@ function registerHistoryCompleter(input){
     var completions_array = document.getElementsByClassName("history-completion-list");
 
     if (completions_array.length != 1){
-      chrome.runtime.sendMessage({action: "log", msg: `Weird element count: ${completions_array.length}`});
+      chrome.runtime.sendMessage({action: "log", msg: {
+        'subsystem': 'history',
+        'level': 'warning',
+        'message':`Weird element count: ${completions_array.length}`
+      }});
     } else {
       activeElement+=relIndex;
 
@@ -228,10 +264,18 @@ function registerHistoryCompleter(input){
 
       for (var i=0;i<completions.length;i++){
         if (i==activeElement){
-          chrome.runtime.sendMessage({action: "log", msg: `Activating element ${i}`});
+          chrome.runtime.sendMessage({action: "log", msg: {
+            'subsystem': 'history',
+            'level': 'debug',
+            'message':`Activating element ${i}`
+          }});
           completions[i].classList.add("history-completion-active");
         } else {
-          chrome.runtime.sendMessage({action: "log", msg: `Disabling element ${i}, active is ${activeElement}`});
+          chrome.runtime.sendMessage({action: "log", msg: {
+            'subsystem': 'history',
+            'level': 'debug',
+            'message':`Disabling element ${i}, active is ${activeElement}`
+          }});
           completions[i].classList.remove("history-completion-active");
         }
       }

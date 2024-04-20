@@ -1,7 +1,11 @@
 var current_binding;
 var search_input_id = "emacsBindingsSearchInput";
 
-chrome.runtime.sendMessage({action: "log", msg: `Loading content script in ${document.title}`});
+chrome.runtime.sendMessage({action: "log", msg: {
+  'subsystem': 'content',
+  'level': 'debug',
+  'message': `Loading content script in ${document.title}`
+}});
 
 // recursively generate ESC <key> compat mappings for M-<key>
 function generate_ESC_bindings(bindings){
@@ -187,20 +191,32 @@ document.addEventListener("keyup", (e) => {
 
 document.addEventListener("keydown", (e) => {
   if (e.key == "Shift" || e.key == "Control" || e.key == "Alt" || e.key == "Meta"){
-    chrome.runtime.sendMessage({action: "log", msg: "Ignoring modifier"});
+    chrome.runtime.sendMessage({action: "log", msg: {
+    'subsystem': 'keybinding',
+    'level': 'debug',
+      'message': "Ignoring modifier"
+    }});
     return;
   }
 
   var key = get_key(e),
       target_type = e.target.tagName.toLowerCase();
 
-  chrome.runtime.sendMessage({action: "log", msg: `user press key is ${key}, target type is ${target_type}`});
+  chrome.runtime.sendMessage({action: "log", msg: {
+    'subsystem': 'keybinding',
+    'level': 'debug',
+    'message': `user press key is ${key}, target type is ${target_type}`
+  }});
 
   if (!current_binding) {
     current_binding = get_current_bind(target_type);
   }
 
-  chrome.runtime.sendMessage({action: "log", msg: `current binding is ${Object.keys(current_binding)}`});
+  chrome.runtime.sendMessage({action: "log", msg: {
+    'subsystem': 'keybinding',
+    'level': 'debug',
+    'message': `current binding is ${Object.keys(current_binding)}`
+  }});
 
   var command = current_binding[key];
   switch (typeof command) {
