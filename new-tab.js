@@ -164,7 +164,7 @@ function registerHistoryCompleter(input){
         .replaceAll('<', '&lt;')
         .replaceAll('>', '&gt;');
 
-      completion.innerHTML = `<b>${item.title}</b><br/>${item.url}
+      completion.innerHTML = `<b>${item.title}</b><span style="float:right">[Visits: ${item.visitCount}]</span><br/>${item.url}
 <input type='hidden' id='url' value='${item.url}'/>
 <input type='hidden' id='title' value='${item.title}'/>
 <input type='hidden' id='visitCount' value='${item.visitCount}'/>
