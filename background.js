@@ -15,6 +15,7 @@ var default_options = {
   preferred_input: "dialog",
   nt_url_autosubmit: true,
   nt_history_age_days: 30,
+  nt_history_max_items: 100,
   nt_hide_intro: false,
   nt_hide_github: false,
   nt_hide_search_engines: false,
@@ -133,7 +134,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         sendResponse(false);
       break;
     case "options":
-      sendResponse({ response: options });
+      sendResponse({ response: {
+        'current_options': options,
+        'default_options': default_options
+      }});
       break;
     case "next_tab":
       chrome.tabs.query({currentWindow: true}).then(

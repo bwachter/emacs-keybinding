@@ -71,6 +71,7 @@ Note that bindings without modifier keys are disabled per default. C-n/C-p cause
 <form>
 <label><input type="checkbox" name="nt_url_autosubmit" id="nt_url_autosubmit"/> Enter in a list of suggestions directly navigates to the suggestion</label><br/>
 <label>Number of days to search for history <input type="number" name="nt_history_age_days" id="nt_history_age_days" min="1"/></label><br/>
+<label>Maximum number of history items to show <input type="number" name="nt_history_max_items" id="nt_history_max_items" min="1"/></label><br/>
 </form>
 #+END_EXPORT
 *** Hide page elements

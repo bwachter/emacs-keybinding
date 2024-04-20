@@ -77,7 +77,7 @@ async function loadTopSites(){
     includePinned: options.nt_top_pinned,
     includeSearchShortcuts: options.nt_top_searchshortcuts,
     newtab: options.nt_top_newtab,
-    limit: options.nt_top_num
+    limit: Number(options.nt_top_num)||default_options.nt_top_num
   });
   let container = document.getElementById("top-site-group");
 
@@ -155,7 +155,8 @@ async function loadOptions(){
     action: "options"
   }).then((message) => {
     state.options_ready = true;
-    options = message.response;
+    options = message.response.current_options;
+    default_options = message.response.default_options;
     updatePage();
   });
 }
@@ -176,13 +177,16 @@ function registerHistoryCompleter(input){
     }
 
     let historyDate = new Date();
-    historyDate.setDate(historyDate.getDate() - options.nt_history_age_days);
+    historyDate.setDate(historyDate.getDate() - Number(options.nt_history_age_days)||default_options.nt_history_age_days);
     chrome.runtime.sendMessage({action: "log", msg: {
       'subsystem': 'history',
       'level': 'debug',
       'message': `URL value: ${this.value}, until ${historyDate}`
     }});
-    let completions = await browser.history.search({ text: this.value });
+    let completions = await browser.history.search({
+      text: this.value,
+      maxResults: Number(options.nt_history_max_items)||default_options.nt_history_max_items
+    });
     chrome.runtime.sendMessage({action: "log", msg: {
       'subsystem': 'history',
       'level': 'debug',
@@ -346,6 +350,7 @@ function updatePage(){
 }
 
 var options = {};
+var defaultOptions = {};
 var state = { dom_ready: false,
               options_ready: false };
 
