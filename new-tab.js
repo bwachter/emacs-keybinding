@@ -4,6 +4,21 @@ async function urlOrSearch(event){
 
   try {
     new URL(urlbar.value);
+
+    try {
+      if (options.experimental == true){
+        // this is preparation to see if we can offer switching to open tabs
+        // instead of navigating to URLs in a new page
+        let tabs = browser.tabs.query({url: urlbar.value});
+        let all_tabs = browser.tabs.query({currentWindow: true});
+
+        chrome.runtime.sendMessage({action: "log", msg: `Queried tabs for ${urlbar.value}: ${JSON.stringify(tabs)}`});
+        chrome.runtime.sendMessage({action: "log", msg: `Queried all tabs: ${JSON.stringify(all_tabs)}`});
+      }
+    } catch (error){
+      chrome.runtime.sendMessage({action: "log", msg: `Eggsperimental issues: ${error}`});
+    }
+
     document.location.href = urlbar.value;
     return;
   } catch (error){
