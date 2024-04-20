@@ -159,6 +159,10 @@ function registerHistoryCompleter(input){
       // order of those input element matters as extraction of URL happens based
       // on index later on
       if (item.title == null) item.title="";
+      item.title = item.title
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;');
 
       completion.innerHTML = `<b>${item.title}</b><br/>${item.url}
 <input type='hidden' id='url' value='${item.url}'/>
