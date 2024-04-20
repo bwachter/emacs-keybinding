@@ -236,7 +236,12 @@ document.addEventListener("keydown", (e) => {
 }, true);
 
 chrome.runtime.onMessage.addListener((msg) => {
-  chrome.runtime.sendMessage({action: "log", msg: `action: ${msg.action}`});
+  if (msg.action != "log")
+    chrome.runtime.sendMessage({action: "log", msg: {
+      'subsystem': 'content',
+      'level': 'debug',
+      'message': `action: ${msg.action}`
+    }});
   switch(msg.action) {
     case "focus_window":
       focus_window();
