@@ -52,12 +52,14 @@ function onError(error){
   console.log(`Error; ${error}`);
 }
 
+// return true if the message was logged, false otherwise
 function logMsg(msg){
   if ('debug_log' in options && options['debug_log'] == true){
     const msgType = typeof(msg);
-    if (msgType == "string")
+    if (msgType == "string"){
       console.log(`Emacs-keybinding: ${msg}`);
-    else if (msgType == "object"){
+      return true;
+    } else if (msgType == "object"){
       const keyName = 'debug_level_' + msg['subsystem'];
       if (keyName in options){
         var msgLevel = 3; // set to info as default
@@ -77,8 +79,10 @@ function logMsg(msg){
 
         debugLevel = options[keyName];
 
-        if (msgLevel <= debugLevel)
+        if (msgLevel <= debugLevel){
           console.log(`Emacs-keybinding[${msg.subsystem}:${msg.level}] ${msg.message}`);
+          return true;
+        }
       } else {
         console.log(`Emacs-keybinding: Log subsystem missing: ${msg.subsystem}`);
       }
@@ -86,6 +90,7 @@ function logMsg(msg){
       console.log(`Emacs-keybinding: Unhandled message type ${msgType}`);
     }
   }
+  return false
 }
 
 /* Eventually this should
@@ -115,7 +120,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   switch(msg.action) {
     case "log":
-      logMsg(msg.msg);
+      var sent = logMsg(msg.msg);
+      sendResponse({ response: sent });
       break;
     case "option":
       if (msg.key in options && options[msg.key] != msg.value){
