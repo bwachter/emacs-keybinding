@@ -185,7 +185,8 @@ function registerHistoryCompleter(input){
     }});
     let completions = await browser.history.search({
       text: this.value,
-      maxResults: Number(options.nt_history_max_items)||default_options.nt_history_max_items
+      maxResults: Number(options.nt_history_max_items)||default_options.nt_history_max_items,
+      startTime: historyDate
     });
     chrome.runtime.sendMessage({action: "log", msg: {
       'subsystem': 'history',
