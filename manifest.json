@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Emacs-keybinding",
   "description": "An addon for using Firefox with Emacs keybinding",
-  "version": "0.2.5",
+  "version": "0.2.6",
 
   "homepage_url": "https://github.com/bwachter/emacs-keybinding",
   "author": "Wang Kai",
